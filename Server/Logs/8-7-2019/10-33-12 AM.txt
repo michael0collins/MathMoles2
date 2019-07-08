@@ -1,0 +1,46 @@
+[Trace]   DarkRiftServer        System Details:
+                                	OS: Microsoft Windows NT 6.2.9200.0
+                                	CLS Version: 4.0.30319.42000
+                                	DarkRift: 2.4.4.0 - Free
+[Trace]   PluginFactory         Created plugin 'BichannelListener'.
+[Trace]   DefaultNetworkListener Starting bichannel listener.
+[Info]    DefaultNetworkListener Server mounted, listening on port 4296.
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:55058.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:61783.
+[Info]    ClientManager         New client [0] connected [127.0.0.1:55058|127.0.0.1:61783].
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:57170.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:55021.
+[Info]    ClientManager         New client [1] connected [127.0.0.1:57170|127.0.0.1:55021].
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:57227.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:51828.
+[Info]    ClientManager         New client [2] connected [127.0.0.1:57227|127.0.0.1:51828].
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:57235.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:56494.
+[Info]    ClientManager         New client [3] connected [127.0.0.1:57235|127.0.0.1:56494].
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:57472.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:59298.
+[Info]    ClientManager         New client [4] connected [127.0.0.1:57472|127.0.0.1:59298].
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:57484.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:60996.
+[Info]    ClientManager         New client [5] connected [127.0.0.1:57484|127.0.0.1:60996].
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:57485.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:60997.
+[Info]    ClientManager         New client [6] connected [127.0.0.1:57485|127.0.0.1:60997].
+[Trace]   CommandEngine         Command entered: 'plugins'
+[Error]   CommandEngine         Syntax Error: Zgłoszono wyjątek typu 'DarkRift.Server.CommandSyntaxException'.
+                                Usage: plugins uninstall <plugin-name>
+                                plugins loaded (-h)
+                                	Adding option -h will include hidden plugins.
+                                plugins installed
+[Trace]   CommandEngine         Command entered: 'plugins installed'
+[Info]    PluginController      Found 9 plugins installed.
+                                1   HelpCommand              V1.0.0
+                                2   PluginController         V1.0.0
+                                3   Sniffer                  V1.0.0
+                                4   DemoCommand              V1.0.0
+                                5   MessageCommand           V1.0.0
+                                6   MockCommand              V1.0.0
+                                7   DebugCommand             V1.0.0
+                                8   ClientCommand            V1.0.0
+                                9   ObjectCacheMonitor       V1.0.0
+                                

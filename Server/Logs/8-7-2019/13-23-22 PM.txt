@@ -1,0 +1,45 @@
+[Trace]   DarkRiftServer        System Details:
+                                	OS: Microsoft Windows NT 6.2.9200.0
+                                	CLS Version: 4.0.30319.42000
+                                	DarkRift: 2.4.4.0 - Free
+[Info]    MathMoles             MathMoles plugin started!
+[Trace]   PluginFactory         Created plugin 'MathMoles'.
+[Info]    ExtendedPluginManagerBase Loaded plugin MathMoles version 1.0.0
+[Trace]   PluginFactory         Created plugin 'BichannelListener'.
+[Trace]   DefaultNetworkListener Starting bichannel listener.
+[Info]    DefaultNetworkListener Server mounted, listening on port 4296.
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:59031.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:50984.
+[Info]    ClientManager         New client [0] connected [127.0.0.1:59031|127.0.0.1:50984].
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:59032.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:50985.
+[Info]    ClientManager         New client [1] connected [127.0.0.1:59032|127.0.0.1:50985].
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:59039.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:59070.
+[Info]    ClientManager         New client [2] connected [127.0.0.1:59039|127.0.0.1:59070].
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:59040.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:59071.
+[Info]    ClientManager         New client [3] connected [127.0.0.1:59040|127.0.0.1:59071].
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:59053.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:51852.
+[Info]    ClientManager         New client [4] connected [127.0.0.1:59053|127.0.0.1:51852].
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:59091.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:63401.
+[Info]    ClientManager         New client [5] connected [127.0.0.1:59091|127.0.0.1:63401].
+[Info]    MathMoles             New player 'Guest #1240541348' connected!
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:59096.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:50252.
+[Info]    ClientManager         New client [6] connected [127.0.0.1:59096|127.0.0.1:50252].
+[Info]    MathMoles             New player 'Guest #2502271853' connected!
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:59101.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:50253.
+[Info]    ClientManager         New client [7] connected [127.0.0.1:59101|127.0.0.1:50253].
+[Info]    MathMoles             New player 'Guest #3326964528' connected!
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:59110.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:55907.
+[Info]    ClientManager         New client [8] connected [127.0.0.1:59110|127.0.0.1:55907].
+[Info]    MathMoles             New player 'Guest #2982733700' connected!
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:59156.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:51241.
+[Info]    ClientManager         New client [9] connected [127.0.0.1:59156|127.0.0.1:51241].
+[Info]    MathMoles             New player 'Guest #3459897343' connected!

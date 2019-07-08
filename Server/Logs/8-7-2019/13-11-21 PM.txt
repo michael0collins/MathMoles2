@@ -1,0 +1,16 @@
+[Trace]   DarkRiftServer        System Details:
+                                	OS: Microsoft Windows NT 6.2.9200.0
+                                	CLS Version: 4.0.30319.42000
+                                	DarkRift: 2.4.4.0 - Free
+[Info]    MathMoles             MathMoles plugin started!
+[Trace]   PluginFactory         Created plugin 'MathMoles'.
+[Info]    ExtendedPluginManagerBase Loaded plugin MathMoles version 1.0.0
+[Trace]   PluginFactory         Created plugin 'BichannelListener'.
+[Trace]   DefaultNetworkListener Starting bichannel listener.
+[Info]    DefaultNetworkListener Server mounted, listening on port 4296.
+[Trace]   CommandEngine         Command entered: 'rooms'
+[Trace]   CommandEngine         Command entered: 'rooms help'
+[Trace]   CommandEngine         Command entered: 'asd'
+[Error]   CommandEngine         Could not find any plugins with that command.
+[Trace]   CommandEngine         Command entered: 'room'
+[Error]   CommandEngine         Could not find any plugins with that command.

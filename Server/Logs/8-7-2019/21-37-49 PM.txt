@@ -1,0 +1,214 @@
+[Trace]   DarkRiftServer        System Details:
+                                	OS: Microsoft Windows NT 6.2.9200.0
+                                	CLS Version: 4.0.30319.42000
+                                	DarkRift: 2.4.4.0 - Free
+[Info]    MathMoles             MathMoles plugin started!
+[Trace]   PluginFactory         Created plugin 'MathMoles'.
+[Info]    ExtendedPluginManagerBase Loaded plugin MathMoles version 1.0.0
+[Trace]   PluginFactory         Created plugin 'BichannelListener'.
+[Trace]   DefaultNetworkListener Starting bichannel listener.
+[Info]    DefaultNetworkListener Server mounted, listening on port 4296.
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:52097.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:57694.
+[Info]    ClientManager         New client [0] connected [127.0.0.1:52097|127.0.0.1:57694].
+[Info]    MathMoles             New player 'Guest #828347070' connected!
+[Info]    MathMoles             New room created! #828347070
+[Info]    MathMoles             New player 'Guest#828347070' joined room #828347070
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:52102.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:57695.
+[Info]    ClientManager         New client [1] connected [127.0.0.1:52102|127.0.0.1:57695].
+[Info]    MathMoles             New player 'Guest #4188063' connected!
+[Info]    MathMoles             New player 'Guest#4188063' joined room #828347070
+[Info]    MathMoles             Starting countdown for room #828347070!
+[Info]    MathMoles             Player 'Guest#4188063' left room #828347070
+[Info]    MathMoles             Player 'Guest#4188063' disconnected.
+[Info]    ClientManager         Client [1] disconnected.
+[Info]    MathMoles             Player 'Guest#828347070' left room #828347070
+[Info]    MathMoles             Player 'Guest#828347070' disconnected.
+[Info]    ClientManager         Client [0] disconnected.
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:52138.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:65277.
+[Info]    ClientManager         New client [2] connected [127.0.0.1:52138|127.0.0.1:65277].
+[Info]    MathMoles             New player 'Guest #2817070833' connected!
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:52146.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:49460.
+[Info]    ClientManager         New client [3] connected [127.0.0.1:52146|127.0.0.1:49460].
+[Info]    MathMoles             New player 'Guest #3690053970' connected!
+[Info]    MathMoles             Player 'Guest#3690053970' disconnected.
+[Info]    ClientManager         Client [3] disconnected.
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:52150.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:49461.
+[Info]    ClientManager         New client [4] connected [127.0.0.1:52150|127.0.0.1:49461].
+[Info]    MathMoles             New player 'Guest #3376376836' connected!
+[Info]    MathMoles             Player 'Guest#3376376836' disconnected.
+[Info]    ClientManager         Client [4] disconnected.
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:52154.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:49462.
+[Info]    ClientManager         New client [5] connected [127.0.0.1:52154|127.0.0.1:49462].
+[Info]    MathMoles             New player 'Guest #3256307238' connected!
+[Info]    MathMoles             New room created! #4188063
+[Info]    MathMoles             New player 'Guest#2817070833' joined room #4188063
+[Info]    MathMoles             New player 'Guest#3256307238' joined room #4188063
+[Info]    MathMoles             Starting countdown for room #4188063!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             Player 'Guest#3256307238' left room #4188063
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             Player 'Guest#3256307238' disconnected.
+[Info]    ClientManager         Client [5] disconnected.
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             Player 'Guest#2817070833' left room #4188063
+[Info]    MathMoles             Player 'Guest#2817070833' disconnected.
+[Info]    ClientManager         Client [2] disconnected.

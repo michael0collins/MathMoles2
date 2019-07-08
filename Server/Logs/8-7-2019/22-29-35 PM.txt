@@ -1,0 +1,30 @@
+[Trace]   DarkRiftServer        System Details:
+                                	OS: Microsoft Windows NT 6.2.9200.0
+                                	CLS Version: 4.0.30319.42000
+                                	DarkRift: 2.4.4.0 - Free
+[Info]    MathMoles             MathMoles plugin started!
+[Trace]   PluginFactory         Created plugin 'MathMoles'.
+[Info]    ExtendedPluginManagerBase Loaded plugin MathMoles version 1.0.0
+[Trace]   PluginFactory         Created plugin 'BichannelListener'.
+[Trace]   DefaultNetworkListener Starting bichannel listener.
+[Info]    DefaultNetworkListener Server mounted, listening on port 4296.
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:53206.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:61806.
+[Info]    ClientManager         New client [0] connected [127.0.0.1:53206|127.0.0.1:61806].
+[Info]    MathMoles             New player 'Guest #250902171' connected!
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:53209.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:54374.
+[Info]    ClientManager         New client [1] connected [127.0.0.1:53209|127.0.0.1:54374].
+[Info]    MathMoles             New player 'Guest #429347728' connected!
+[Info]    MathMoles             New room created! #250902171
+[Info]    MathMoles             New player 'Guest#429347728' joined room #250902171
+[Info]    MathMoles             New player 'Guest#250902171' joined room #250902171
+[Info]    MathMoles             Starting countdown for room #250902171!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             Player 'Guest#250902171' left room #250902171
+[Info]    MathMoles             Player 'Guest#250902171' disconnected.
+[Info]    ClientManager         Client [0] disconnected.
+[Info]    MathMoles             Player 'Guest#429347728' left room #250902171
+[Info]    MathMoles             Room #250902171 destroyed.
+[Info]    MathMoles             Player 'Guest#429347728' disconnected.
+[Info]    ClientManager         Client [1] disconnected.

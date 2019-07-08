@@ -1,0 +1,117 @@
+[Trace]   DarkRiftServer        System Details:
+                                	OS: Microsoft Windows NT 6.2.9200.0
+                                	CLS Version: 4.0.30319.42000
+                                	DarkRift: 2.4.4.0 - Free
+[Info]    MathMoles             MathMoles plugin started!
+[Trace]   PluginFactory         Created plugin 'MathMoles'.
+[Info]    ExtendedPluginManagerBase Loaded plugin MathMoles version 1.0.0
+[Trace]   PluginFactory         Created plugin 'BichannelListener'.
+[Trace]   DefaultNetworkListener Starting bichannel listener.
+[Info]    DefaultNetworkListener Server mounted, listening on port 4296.
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:59859.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:64331.
+[Info]    ClientManager         New client [0] connected [127.0.0.1:59859|127.0.0.1:64331].
+[Info]    MathMoles             New player 'Guest #93425539' connected!
+[Info]    MathMoles             New room created! #93425539
+[Info]    MathMoles             New player 'Guest#93425539' joined room #93425539
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:59865.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:54132.
+[Info]    ClientManager         New client [1] connected [127.0.0.1:59865|127.0.0.1:54132].
+[Info]    MathMoles             New player 'Guest #399533259' connected!
+[Info]    MathMoles             New player 'Guest#399533259' joined room #93425539
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:59954.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:53356.
+[Info]    ClientManager         New client [2] connected [127.0.0.1:59954|127.0.0.1:53356].
+[Info]    MathMoles             New player 'Guest #2292495955' connected!
+[Info]    MathMoles             New player 'Guest#2292495955' joined room #93425539
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:60063.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:58162.
+[Info]    ClientManager         New client [3] connected [127.0.0.1:60063|127.0.0.1:58162].
+[Info]    MathMoles             New player 'Guest #3749147653' connected!
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:60151.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:57638.
+[Info]    ClientManager         New client [4] connected [127.0.0.1:60151|127.0.0.1:57638].
+[Info]    MathMoles             New player 'Guest #1190012110' connected!
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:60244.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:64444.
+[Info]    ClientManager         New client [5] connected [127.0.0.1:60244|127.0.0.1:64444].
+[Info]    MathMoles             New player 'Guest #3080023229' connected!
+[Info]    MathMoles             New player 'Guest#3080023229' joined room #93425539
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:60257.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:57595.
+[Info]    ClientManager         New client [6] connected [127.0.0.1:60257|127.0.0.1:57595].
+[Info]    MathMoles             New player 'Guest #1958144438' connected!
+[Info]    MathMoles             New room created! #399533259
+[Info]    MathMoles             New player 'Guest#1958144438' joined room #399533259
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:60272.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:64914.
+[Info]    ClientManager         New client [7] connected [127.0.0.1:60272|127.0.0.1:64914].
+[Info]    MathMoles             New player 'Guest #1845272864' connected!
+[Info]    MathMoles             New player 'Guest#1845272864' joined room #399533259
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:60280.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:54097.
+[Info]    ClientManager         New client [8] connected [127.0.0.1:60280|127.0.0.1:54097].
+[Info]    MathMoles             New player 'Guest #1806151121' connected!
+[Info]    MathMoles             New player 'Guest#1806151121' joined room #399533259
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:60296.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:54100.
+[Info]    ClientManager         New client [9] connected [127.0.0.1:60296|127.0.0.1:54100].
+[Info]    MathMoles             New player 'Guest #594973733' connected!
+[Info]    MathMoles             New player 'Guest#594973733' joined room #399533259
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:60404.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:64214.
+[Info]    ClientManager         New client [10] connected [127.0.0.1:60404|127.0.0.1:64214].
+[Info]    MathMoles             New player 'Guest #1698493564' connected!
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:60477.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:54166.
+[Info]    ClientManager         New client [11] connected [127.0.0.1:60477|127.0.0.1:54166].
+[Info]    MathMoles             New player 'Guest #2111675962' connected!
+[Info]    MathMoles             New room created! #2292495955
+[Info]    MathMoles             New player 'Guest#2111675962' joined room #2292495955
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:60757.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:62038.
+[Info]    ClientManager         New client [12] connected [127.0.0.1:60757|127.0.0.1:62038].
+[Info]    MathMoles             New player 'Guest #1863066726' connected!
+[Info]    MathMoles             New player 'Guest#1863066726' joined room #2292495955
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:60839.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:51634.
+[Info]    ClientManager         New client [13] connected [127.0.0.1:60839|127.0.0.1:51634].
+[Info]    MathMoles             New player 'Guest #686417497' connected!
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:60851.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:63581.
+[Info]    ClientManager         New client [14] connected [127.0.0.1:60851|127.0.0.1:63581].
+[Info]    MathMoles             New player 'Guest #1778816374' connected!
+[Info]    MathMoles             New player 'Guest#1778816374' joined room #2292495955
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:61060.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:55393.
+[Info]    ClientManager         New client [15] connected [127.0.0.1:61060|127.0.0.1:55393].
+[Info]    MathMoles             New player 'Guest #3722485690' connected!
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:61068.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:60805.
+[Info]    ClientManager         New client [16] connected [127.0.0.1:61068|127.0.0.1:60805].
+[Info]    MathMoles             New player 'Guest #3804318422' connected!
+[Info]    MathMoles             New player 'Guest#3804318422' joined room #2292495955
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:61118.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:63781.
+[Info]    ClientManager         New client [17] connected [127.0.0.1:61118|127.0.0.1:63781].
+[Info]    MathMoles             New player 'Guest #2702672633' connected!
+[Info]    MathMoles             New room created! #3749147653
+[Info]    MathMoles             New player 'Guest#2702672633' joined room #3749147653
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:61149.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:52863.
+[Info]    ClientManager         New client [18] connected [127.0.0.1:61149|127.0.0.1:52863].
+[Info]    MathMoles             New player 'Guest #1298856516' connected!
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:61154.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:55057.
+[Info]    ClientManager         New client [19] connected [127.0.0.1:61154|127.0.0.1:55057].
+[Info]    MathMoles             New player 'Guest #81218452' connected!
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:61165.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:55058.
+[Info]    ClientManager         New client [20] connected [127.0.0.1:61165|127.0.0.1:55058].
+[Info]    MathMoles             New player 'Guest #153123209' connected!
+[Info]    MathMoles             New player 'Guest#153123209' joined room #3749147653
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:61230.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:60351.
+[Info]    ClientManager         New client [21] connected [127.0.0.1:61230|127.0.0.1:60351].
+[Info]    MathMoles             New player 'Guest #979966864' connected!
+[Info]    MathMoles             New player 'Guest#979966864' joined room #3749147653

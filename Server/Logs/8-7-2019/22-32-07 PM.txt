@@ -1,0 +1,47 @@
+[Trace]   DarkRiftServer        System Details:
+                                	OS: Microsoft Windows NT 6.2.9200.0
+                                	CLS Version: 4.0.30319.42000
+                                	DarkRift: 2.4.4.0 - Free
+[Info]    MathMoles             MathMoles plugin started!
+[Trace]   PluginFactory         Created plugin 'MathMoles'.
+[Info]    ExtendedPluginManagerBase Loaded plugin MathMoles version 1.0.0
+[Trace]   PluginFactory         Created plugin 'BichannelListener'.
+[Trace]   DefaultNetworkListener Starting bichannel listener.
+[Info]    DefaultNetworkListener Server mounted, listening on port 4296.
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:53279.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:62076.
+[Info]    ClientManager         New client [0] connected [127.0.0.1:53279|127.0.0.1:62076].
+[Info]    MathMoles             New player 'Guest #892603506' connected!
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:53282.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:54764.
+[Info]    ClientManager         New client [1] connected [127.0.0.1:53282|127.0.0.1:54764].
+[Info]    MathMoles             New player 'Guest #998113404' connected!
+[Info]    MathMoles             New room created! #892603506
+[Info]    MathMoles             New player 'Guest#998113404' joined room #892603506
+[Info]    MathMoles             New player 'Guest#892603506' joined room #892603506
+[Info]    MathMoles             Starting countdown for room #892603506!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             Player 'Guest#892603506' left room #892603506
+[Info]    MathMoles             Player 'Guest#892603506' disconnected.
+[Info]    ClientManager         Client [0] disconnected.
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:53295.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:50985.
+[Info]    ClientManager         New client [2] connected [127.0.0.1:53295|127.0.0.1:50985].
+[Info]    MathMoles             New player 'Guest #2890582294' connected!
+[Info]    MathMoles             New room created! #998113404
+[Info]    MathMoles             New player 'Guest#2890582294' joined room #998113404
+[Info]    MathMoles             Player 'Guest#998113404' left room #892603506
+[Info]    MathMoles             Room #892603506 destroyed.
+[Info]    MathMoles             Player 'Guest#998113404' disconnected.
+[Info]    ClientManager         Client [1] disconnected.
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:53300.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:56992.
+[Info]    ClientManager         New client [3] connected [127.0.0.1:53300|127.0.0.1:56992].
+[Info]    MathMoles             New player 'Guest #2620861080' connected!
+[Info]    MathMoles             New player 'Guest#2620861080' joined room #998113404
+[Info]    MathMoles             Starting countdown for room #998113404!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             Player 'Guest#2890582294' left room #998113404
+[Info]    MathMoles             Player 'Guest#2890582294' disconnected.
+[Info]    ClientManager         Client [2] disconnected.

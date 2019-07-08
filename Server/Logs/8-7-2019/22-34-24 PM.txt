@@ -1,0 +1,26 @@
+[Trace]   DarkRiftServer        System Details:
+                                	OS: Microsoft Windows NT 6.2.9200.0
+                                	CLS Version: 4.0.30319.42000
+                                	DarkRift: 2.4.4.0 - Free
+[Info]    MathMoles             MathMoles plugin started!
+[Trace]   PluginFactory         Created plugin 'MathMoles'.
+[Info]    ExtendedPluginManagerBase Loaded plugin MathMoles version 1.0.0
+[Trace]   PluginFactory         Created plugin 'BichannelListener'.
+[Trace]   DefaultNetworkListener Starting bichannel listener.
+[Info]    DefaultNetworkListener Server mounted, listening on port 4296.
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:53372.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:54409.
+[Info]    ClientManager         New client [0] connected [127.0.0.1:53372|127.0.0.1:54409].
+[Info]    MathMoles             New player 'Guest #891512853' connected!
+[Trace]   DefaultNetworkListener Accepted TCP connection from 127.0.0.1:53416.
+[Trace]   DefaultNetworkListener Accepted UDP connection from 127.0.0.1:61614.
+[Info]    ClientManager         New client [1] connected [127.0.0.1:53416|127.0.0.1:61614].
+[Info]    MathMoles             New player 'Guest #1214541753' connected!
+[Info]    MathMoles             New room created! #891512853
+[Info]    MathMoles             New player 'Guest#1214541753' joined room #891512853
+[Info]    MathMoles             New player 'Guest#891512853' joined room #891512853
+[Info]    MathMoles             Starting countdown for room #891512853!
+[Info]    MathMoles             All players loaded!
+[Info]    MathMoles             Player 'Guest#1214541753' left room #891512853
+[Info]    MathMoles             Player 'Guest#1214541753' disconnected.
+[Info]    ClientManager         Client [1] disconnected.
