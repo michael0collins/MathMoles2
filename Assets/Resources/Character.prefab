@@ -4815,7 +4815,7 @@ MonoBehaviour:
   groundedSpeed: 3
   airSpeed: 2
   jumpForce: 4.5
-  attackForce: 200
+  attackForce: 700
   attackDistance: 0.5
   attackFieldSize: 0.2
   playerAnimationController: {fileID: 976280054}

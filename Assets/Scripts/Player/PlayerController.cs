@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     public bool isGrounded { get; private set; }
     public float currentSpeed { get; private set; } = 0f;
 
+    [HideInInspector]
     public float AnimationSpeed = 0f;
 
     private void Awake()
@@ -54,11 +55,11 @@ public class PlayerController : MonoBehaviour
         {
             playerInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
-            if (Input.GetKeyDown(KeyCode.F) && isGrounded)
+            if (Input.GetKeyDown(KeyCode.F))
                 Attack();
 
-            if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
-                rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y + jumpForce, rb.velocity.z);
+            if (Input.GetKeyDown(KeyCode.Space))
+                Jump();
         } else
             playerInput = new Vector2(joyStick.Horizontal, joyStick.Vertical);
 
@@ -92,8 +93,17 @@ public class PlayerController : MonoBehaviour
         rb.AddForce((transform.position - position) * attackForce);
     }
 
+    public void Jump()
+    {
+        if (isGrounded)
+            rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y + jumpForce, rb.velocity.z);
+    }
+
     public void Attack()
     {
+        if (!isGrounded)
+            return;
+
         playerAnimationController.AttackTrigger();
         if (networkPlayer.isLocal) {
             RaycastHit hit;

@@ -1,16 +1,52 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+#if UNITY_EDITOR
+using UnityEditor;
+
+public class ReadOnlyAttribute : PropertyAttribute
+{
+
+}
+
+[CustomPropertyDrawer(typeof(ReadOnlyAttribute))]
+public class ReadOnlyDrawer : PropertyDrawer
+{
+    public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+    {
+        return EditorGUI.GetPropertyHeight(property, label, true);
+    }
+
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    {
+        GUI.enabled = false;
+        EditorGUI.PropertyField(position, property, label, true);
+        GUI.enabled = true;
+    }
+}
+#endif
 
 public class NetworkPlayer : MonoBehaviour
 {
+#if UNITY_EDITOR
+    [ReadOnly]
+#endif
     public uint uid;
+#if UNITY_EDITOR
+    [ReadOnly]
+#endif
     public string username;
+#if UNITY_EDITOR
+    [ReadOnly]
+#endif
     public bool isLocal;
 
+    [HideInInspector]
     public Vector3 newPosition;
+    [HideInInspector]
     public Vector3 newRotation;
-
+    [HideInInspector]
     public Vector3 oldPosition;
+    [HideInInspector]
     public Vector3 oldRotation;
 
     public GameObject nametagCanvas;

@@ -15,6 +15,18 @@ public class GameManager : MonoBehaviour
 
     private Spawn[] spawnPoints;
 
+    public void HitButton()
+    {
+        if (NetworkManager.LocalPlayer != null)
+            NetworkManager.LocalPlayer.pc.Attack();
+    }
+
+    public void JumpButton()
+    {
+        if (NetworkManager.LocalPlayer != null)
+            NetworkManager.LocalPlayer.pc.Jump();
+    }
+
     private void OnEnable()
     {
         NetworkManager.CreatePlayer += OnCreatePlayer;

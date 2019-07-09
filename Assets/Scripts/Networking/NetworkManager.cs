@@ -47,6 +47,18 @@ public class NetworkManager : MonoBehaviour
             return Instance.lPlayers.Values;
         }
     }
+    public static NetworkPlayer LocalPlayer
+    {
+        get
+        {
+            NetworkPlayer localPlayer;
+            Instance.players.TryGetValue(UID, out localPlayer);
+            if (localPlayer != null)
+                return localPlayer;
+            else
+                return null;
+        }
+    }
 
     public static event CanceledJoiningLobby CanceledJoiningLobby;
     public static event JoinedLobby JoinedLobby;
