@@ -19,8 +19,7 @@ public class PlayerAnimationController : MonoBehaviour
         float moveSpeed = pc.AnimationSpeed;
         if (moveSpeed < 0) moveSpeed *= -1;
         anim.SetFloat("MovementSpeed", moveSpeed);
-
-        if (pc.isGrounded) { anim.SetBool("Grounded", true); } else { anim.SetBool("Grounded", false); }
+        anim.SetBool("Grounded", pc.isGrounded);
     }
 
     public void AttackTrigger()

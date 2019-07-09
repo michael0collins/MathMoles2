@@ -14,6 +14,8 @@ public delegate void AddLobbyPlayer(string username);
 public delegate void MapLoadingStarted(string sceneName);
 public delegate void MapLoaded();
 public delegate void CreatePlayer(uint uid, string username, int spawnPoint);
+public delegate void PlayerHit(NetworkPlayer source, NetworkPlayer target, Vector3 position);
+public delegate void PlayerFailedHit(NetworkPlayer source);
 
 public class LobbyPlayer
 {
@@ -55,6 +57,8 @@ public class NetworkManager : MonoBehaviour
     public static event MapLoaded MapLoaded;
 
     public static event CreatePlayer CreatePlayer;
+    public static event PlayerHit PlayerHit;
+    public static event PlayerFailedHit PlayerFailedHit;
 
     private static NetworkManager Instance;
 
@@ -127,11 +131,47 @@ public class NetworkManager : MonoBehaviour
             {
                 StartCoroutine(LoadSceneAsync("TestArtScene"));
             }
+            if (message.Tag == NetworkTags.S_CharacterFailedHitData)
+            {
+                using (DarkRiftReader reader = message.GetReader())
+                {
+                    NetworkPlayer source;
+
+                    uint suid = reader.ReadUInt32();
+                    players.TryGetValue(suid, out source);
+                    if (source != null)
+                        if (PlayerFailedHit != null)
+                            PlayerFailedHit.Invoke(source);
+                }
+            }
+            if (message.Tag == NetworkTags.S_CharacterHitData)
+            {
+                using (DarkRiftReader reader = message.GetReader())
+                {
+                    Vector3 position = Vector3.zero;
+                    NetworkPlayer source;
+                    NetworkPlayer target;
+
+                    uint suid = reader.ReadUInt32();
+                    uint tuid = reader.ReadUInt32();
+                    players.TryGetValue(suid, out source);
+                    players.TryGetValue(tuid, out target);
+                    if (source != null && target != null)
+                    {
+                        position.x = reader.ReadSingle();
+                        position.y = reader.ReadSingle();
+                        position.z = reader.ReadSingle();
+
+                        if (PlayerHit != null)
+                            PlayerHit.Invoke(source, target, position);
+                    } else
+                        if (debugMode)
+                            Debug.LogError($"[MATCHMAKER] [DEBUG] S_CharacterHitData source or target player not found!");
+
+                }
+            }
             if (message.Tag == NetworkTags.S_SpawnPlayers)
             {
-                if (debugMode)
-                    Debug.Log($"[MATCHMAKER] [DEBUG] S_SpawnPlayers");
-
                 using (DarkRiftReader reader = message.GetReader())
                 {
                     int playersListLength = reader.ReadInt32();
@@ -156,20 +196,24 @@ public class NetworkManager : MonoBehaviour
                     uint uid = reader.ReadUInt32();
                     NetworkPlayer player;
                     players.TryGetValue(uid, out player);
-                    if (debugMode)
-                        Debug.Log($"[MATCHMAKER] [DEBUG] S_CharacterPositionUpdate '{player.username}#{player.uid}'");
-                    if (player != null && player.uid != UID)
+                    if (player != null)
                     {
-                        Vector3 position = Vector3.zero;
-                        Vector3 rotation = Vector3.zero;
-                        position.x = reader.ReadSingle();
-                        position.y = reader.ReadSingle();
-                        position.z = reader.ReadSingle();
-                        rotation.x = reader.ReadSingle();
-                        rotation.y = reader.ReadSingle();
-                        rotation.z = reader.ReadSingle();
-                        player.UpdateData(position, rotation);
-                        player.UpdateAnimationSpeed(reader.ReadSingle());
+                        if (player.uid != UID)
+                        {
+                            Vector3 position = Vector3.zero;
+                            Vector3 rotation = Vector3.zero;
+                            position.x = reader.ReadSingle();
+                            position.y = reader.ReadSingle();
+                            position.z = reader.ReadSingle();
+                            rotation.x = reader.ReadSingle();
+                            rotation.y = reader.ReadSingle();
+                            rotation.z = reader.ReadSingle();
+                            player.UpdateData(position, rotation);
+                            player.UpdateAnimationSpeed(reader.ReadSingle());
+                        }
+                    } else {
+                        if (debugMode)
+                            Debug.Log($"[MATCHMAKER] [DEBUG] Received player update but player doesn't exist #{uid}");
                     }
                 }
             }
@@ -212,6 +256,27 @@ public class NetworkManager : MonoBehaviour
 
         if (Instance.debugMode)
             Debug.Log($"[MATCHMAKER] [DEBUG] Registered network player '{player.username}#{player.uid}'");
+    }
+
+    public static void SendLocalHitData(NetworkPlayer source, NetworkPlayer target, Vector3 position)
+    {
+        Debug.Log($"Player '{source.username}#{source.uid}' hit '{target.username}#{target.uid}'");
+        using (DarkRiftWriter writer = DarkRiftWriter.Create())
+        {
+            writer.Write(target.uid);
+            writer.Write(position.x);
+            writer.Write(position.y);
+            writer.Write(position.z);
+            using (Message message = Message.Create(NetworkTags.SendHitData, writer))
+                Instance.client.SendMessage(message, SendMode.Reliable);
+        }
+    }
+
+    public static void SendLocalFailedHitData()
+    {
+        using (DarkRiftWriter writer = DarkRiftWriter.Create())
+            using (Message message = Message.Create(NetworkTags.SendFailedHitData, writer))
+                Instance.client.SendMessage(message, SendMode.Reliable);
     }
 
     public static void SendLocalCharacterData(NetworkPlayer player, Vector3 position, Vector3 rotation, float animationSpeed)

@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1475511816}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.343, z: -0.24}
+  m_LocalPosition: {x: 0, y: -0.5, z: -0.24}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2067951954}
@@ -69,13 +69,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2067951953}
-  m_LocalRotation: {x: -0.96460205, y: -0.01354553, z: -0.050552595, w: 0.2584644}
+  m_LocalRotation: {x: -1, y: 0, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1475511817}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -150, y: -6, z: 0}
+  m_LocalEulerAnglesHint: {x: -180, y: 0, z: 0}
 --- !u!198 &2067951956
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -4778,7 +4778,7 @@ GameObject:
   - component: {fileID: 7436875899761109219}
   m_Layer: 0
   m_Name: Character
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4815,9 +4815,12 @@ MonoBehaviour:
   groundedSpeed: 3
   airSpeed: 2
   jumpForce: 4.5
-  attackForce: 100
+  attackForce: 200
+  attackDistance: 0.5
+  attackFieldSize: 0.2
   playerAnimationController: {fileID: 976280054}
   debugMode: 0
+  AnimationSpeed: 0
 --- !u!114 &1783446385571682891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4853,7 +4856,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!136 &7436875899761109219
 CapsuleCollider:

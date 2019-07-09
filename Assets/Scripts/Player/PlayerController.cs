@@ -10,14 +10,17 @@ public class PlayerController : MonoBehaviour
     public float jumpForce = 4.5f;
     public float attackForce = 100f;
 
+    public float attackDistance = 2f;
+    public float attackFieldSize = 1f;
+
     public PlayerAnimationController playerAnimationController;
 
     [Header("Debug")]
     public bool debugMode = false;
 
     private Rigidbody rb;
-    private NetworkPlayer networkPlayer;
     private Joystick joyStick;
+    public NetworkPlayer networkPlayer { get; private set; }
     public bool isGrounded { get; private set; }
     public float currentSpeed { get; private set; } = 0f;
 
@@ -32,9 +35,10 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        isGrounded = RayCastCollisionCheck(transform.position, Vector3.down, .7f, "Ground");
+
         if (networkPlayer.isLocal || debugMode)
         {
-            isGrounded = RayCastCollisionCheck(transform.position, Vector3.down, .7f, "Ground");
             #if UNITY_IPHONE || UNITY_ANDROID
                 ProcessUserInput(true);
             #else
@@ -50,7 +54,7 @@ public class PlayerController : MonoBehaviour
         {
             playerInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
-            if (Input.GetKeyDown(KeyCode.F))
+            if (Input.GetKeyDown(KeyCode.F) && isGrounded)
                 Attack();
 
             if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
@@ -77,19 +81,29 @@ public class PlayerController : MonoBehaviour
         transform.forward = rotVector;
     }     
 
-    public void Attack()
-    {
-        playerAnimationController.AttackTrigger();
-    }
-
     bool RayCastCollisionCheck(Vector3 position, Vector3 direction, float distance, string layer)
     {
         RaycastHit hit;
         return Physics.Raycast(position, direction, out hit, distance, 1 << LayerMask.NameToLayer(layer));
     }
 
-    public void GetKnockedBack(float force)
+    public void GetKnockedBack(Vector3 position)
     {
-        rb.AddForce(-Vector3.one * force);
+        rb.AddForce((transform.position - position) * attackForce);
+    }
+
+    public void Attack()
+    {
+        playerAnimationController.AttackTrigger();
+        if (networkPlayer.isLocal) {
+            RaycastHit hit;
+            if (Physics.SphereCast(transform.position, attackFieldSize, transform.forward, out hit, attackDistance))
+            {
+                if (hit.transform.gameObject.tag == "Player")
+                    networkPlayer.SendHitData(hit.transform.GetComponent<NetworkPlayer>(), hit.point);
+            } else {
+                networkPlayer.SendFailedHitData();
+            }
+        }
     }
 }

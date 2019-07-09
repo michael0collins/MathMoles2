@@ -17,7 +17,9 @@ public class NetworkPlayer : MonoBehaviour
     public Text nametag;
 
     private Rigidbody rb;
-    private PlayerController pc;
+    public PlayerController pc { get; private set; }
+
+    private float _oldAnimationSpeed = 0f;
 
     private void Awake()
     {
@@ -36,12 +38,22 @@ public class NetworkPlayer : MonoBehaviour
         pc.AnimationSpeed = speed;
     }
 
+    public void SendHitData(NetworkPlayer hittedPlayer, Vector3 position)
+    {
+        NetworkManager.SendLocalHitData(this, hittedPlayer, position);
+    }
+
+    public void SendFailedHitData()
+    {
+        NetworkManager.SendLocalFailedHitData();
+    }
+
     public void FixedUpdate()
     {
         if (!isLocal)
         {
-            transform.position = Vector3.Lerp(transform.position, newPosition, Time.fixedDeltaTime * 5f);
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(newRotation), Time.fixedDeltaTime * 5f);
+            transform.position = Vector3.Lerp(transform.position, newPosition, Time.fixedDeltaTime * 10f);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(newRotation), Time.fixedDeltaTime * 10f);
         }
         else
         {
@@ -50,14 +62,15 @@ public class NetworkPlayer : MonoBehaviour
             if (oldRotation == null)
                 oldRotation = transform.rotation.eulerAngles;
 
-            if (Vector3.Distance(transform.position, oldPosition) >= 0.1f)
+            if (Vector3.Distance(transform.position, oldPosition) >= 0.1f || Quaternion.Angle(transform.rotation, Quaternion.Euler(oldRotation)) >= 1f || Mathf.Abs(_oldAnimationSpeed - pc.AnimationSpeed) >= 0.1f)
             {
+                _oldAnimationSpeed = pc.AnimationSpeed;
                 oldPosition = transform.position;
                 oldRotation = transform.rotation.eulerAngles;
                 NetworkManager.SendLocalCharacterData(this, transform.position, transform.eulerAngles, rb.velocity.magnitude);
             }
         }
 
-        nametagCanvas.transform.LookAt(Camera.main.transform);
+        nametagCanvas.transform.rotation = Quaternion.LookRotation(nametagCanvas.transform.position - Camera.main.transform.position);
     }
 }

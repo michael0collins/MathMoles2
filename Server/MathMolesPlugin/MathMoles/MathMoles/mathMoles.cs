@@ -12,6 +12,8 @@ namespace MathMoles
 
         public static readonly ushort GameSceneLoaded = 11;
         public static readonly ushort CharacterPositionUpdate = 12;
+        public static readonly ushort SendHitData = 13;
+        public static readonly ushort SendFailedHitData = 14;
 
         public static readonly ushort S_Introduced = 100;
         public static readonly ushort S_FoundLobby = 101;
@@ -20,6 +22,8 @@ namespace MathMoles
         public static readonly ushort S_LoadGameScene = 110;
         public static readonly ushort S_SpawnPlayers = 111;
         public static readonly ushort S_CharacterPositionUpdate = 112;
+        public static readonly ushort S_CharacterHitData = 113;
+        public static readonly ushort S_CharacterFailedHitData = 114;
     }
 
     public enum PlayerStatus
@@ -98,11 +102,12 @@ namespace MathMoles
 
         public void StartGame()
         {
+            MathMoles.Log("Start game " + players.Values.Count);
             Open = false;
             foreach (Player p in players.Values)
                 using (DarkRiftWriter writer = DarkRiftWriter.Create())
-                using (Message message = Message.Create(NetworkTags.S_LoadGameScene, writer))
-                    p.Client.SendMessage(message, SendMode.Reliable);
+                    using (Message message = Message.Create(NetworkTags.S_LoadGameScene, writer))
+                        p.Client.SendMessage(message, SendMode.Reliable);
         }
 
         public void CheckForRoundStart()
@@ -112,6 +117,7 @@ namespace MathMoles
                 if (p.SceneLoaded == false)
                     allPlayersLoaded = false;
 
+            MathMoles.Log("CheckForRoundStart()");
             if (allPlayersLoaded && status == RoomStatus.AWAITING_PLAYERS)
             {
                 status = RoomStatus.PLAYING;
@@ -168,6 +174,33 @@ namespace MathMoles
 
                     using (Message message = Message.Create(NetworkTags.S_UpdateLobbyPlayers, writer))
                         player.Client.SendMessage(message, SendMode.Reliable);
+                }
+        }
+
+        public void SendPlayerHitData(Player source, Player target, Vec3 position)
+        {
+            foreach (Player p in players.Values)
+                using (DarkRiftWriter writer = DarkRiftWriter.Create())
+                {
+                    writer.Write(source.UID);
+                    writer.Write(target.UID);
+                    writer.Write(position.x);
+                    writer.Write(position.y);
+                    writer.Write(position.z);
+
+                    using (Message message = Message.Create(NetworkTags.S_CharacterHitData, writer))
+                        p.Client.SendMessage(message, SendMode.Reliable);
+                }
+        }
+
+        public void SendPlayerFailedHitData(Player source)
+        {
+            foreach (Player p in players.Values)
+                using (DarkRiftWriter writer = DarkRiftWriter.Create())
+                {
+                    writer.Write(source.UID);
+                    using (Message message = Message.Create(NetworkTags.S_CharacterFailedHitData, writer))
+                        p.Client.SendMessage(message, SendMode.Reliable);
                 }
         }
 
@@ -235,6 +268,14 @@ namespace MathMoles
                     return player;
             return null;
         }
+        public Player GetPlayer(uint client)
+        {
+            foreach (Player player in players.Values)
+                if (player.UID == client)
+                    return player;
+            return null;
+        }
+
 
         public Dictionary<uint, Room> rooms = new Dictionary<uint, Room>();
 
@@ -306,17 +347,14 @@ namespace MathMoles
             {
                 if (message.Tag == NetworkTags.Introduce)
                 {
-                    lock (players)
+                    using (DarkRiftReader reader = message.GetReader())
                     {
-                        using (DarkRiftReader reader = message.GetReader())
-                        {
-                            string username = reader.ReadString();
-                            uint playerUID = rnd32Player();
-                            Player newPlayer = new Player(e.Client, playerUID, username);
-                            newPlayer.Introduced();
-                            players.Add(playerUID, newPlayer);
-                            WriteEvent($"New player '{username} #{playerUID}' connected!", LogType.Info);
-                        }
+                        string username = reader.ReadString();
+                        uint playerUID = rnd32Player();
+                        Player newPlayer = new Player(e.Client, playerUID, username);
+                        newPlayer.Introduced();
+                        players.Add(playerUID, newPlayer);
+                        WriteEvent($"New player '{username} #{playerUID}' connected!", LogType.Info);
                     }
                     return;
                 }
@@ -334,7 +372,37 @@ namespace MathMoles
                     Player player = GetPlayer(e.Client);
                     player.Status = PlayerStatus.IN_GAME;
                     player.SceneLoaded = true;
+
                     player.Room.CheckForRoundStart();
+                    return;
+                }
+                if (message.Tag == NetworkTags.SendHitData)
+                {
+                    Player player = GetPlayer(e.Client);
+                    if (player != null)
+                    {
+                        using (DarkRiftReader reader = message.GetReader())
+                        {
+                            Vec3 position = new Vec3();
+                            uint hitTargetUID = reader.ReadUInt32();
+                            position.x = reader.ReadSingle();
+                            position.y = reader.ReadSingle();
+                            position.z = reader.ReadSingle();
+                            Player target = GetPlayer(hitTargetUID);
+                            if (player != null)
+                            {
+                                player.Room.SendPlayerHitData(player, target, position);
+                            }
+                        }
+                    }
+                    return;
+                }
+                if (message.Tag == NetworkTags.SendFailedHitData)
+                {
+                    Player player = GetPlayer(e.Client);
+                    if (player != null)
+                        player.Room.SendPlayerFailedHitData(player);
+
                     return;
                 }
                 if (message.Tag == NetworkTags.CharacterPositionUpdate)

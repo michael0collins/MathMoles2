@@ -11,17 +11,39 @@ public class GameManager : MonoBehaviour
     public GameObject cameraPrefab;
     public GameObject playerPrefab;
 
+    public GameObject hitParticle;
+
     private Spawn[] spawnPoints;
 
     private void OnEnable()
     {
         NetworkManager.CreatePlayer += OnCreatePlayer;
         NetworkManager.MapLoaded += PreparePlayArena;
+        NetworkManager.PlayerHit += OnPlayerHit;
+        NetworkManager.PlayerFailedHit += OnPlayerFailedHit;
+    }
+
+    private void OnPlayerFailedHit(NetworkPlayer source)
+    {
+        if (source.uid != NetworkManager.UID)
+            source.pc.Attack();
+    }
+
+    private void OnPlayerHit(NetworkPlayer source, NetworkPlayer target, Vector3 position)
+    {
+        GameObject particle = Instantiate(hitParticle);
+        particle.transform.position = position;
+        if (source.uid != NetworkManager.UID)
+            source.pc.Attack();
+
+        if (target.uid == NetworkManager.UID)
+            target.pc.GetKnockedBack(position);
     }
 
     private void OnCreatePlayer(uint uid, string username, int spawnPoint)
     {
         GameObject newPlayer = Instantiate(playerPrefab);
+        newPlayer.GetComponent<Rigidbody>().isKinematic = NetworkManager.UID == uid ? false : true;
         newPlayer.transform.position = spawnPoints[spawnPoint].transform.position;
         NetworkPlayer networkPlayer = newPlayer.GetComponent<NetworkPlayer>();
         networkPlayer.uid = uid;
@@ -39,6 +61,8 @@ public class GameManager : MonoBehaviour
     {
         NetworkManager.CreatePlayer -= OnCreatePlayer;
         NetworkManager.MapLoaded -= PreparePlayArena;
+        NetworkManager.PlayerHit -= OnPlayerHit;
+        NetworkManager.PlayerFailedHit -= OnPlayerFailedHit;
     }
 
     private void PreparePlayArena()
