@@ -16,6 +16,7 @@ public delegate void MapLoaded();
 public delegate void CreatePlayer(uint uid, string username, int spawnPoint);
 public delegate void PlayerHit(NetworkPlayer source, NetworkPlayer target, Vector3 position);
 public delegate void PlayerFailedHit(NetworkPlayer source);
+public delegate void NewQuestion(string question, string[] answers);
 
 public class LobbyPlayer
 {
@@ -71,6 +72,7 @@ public class NetworkManager : MonoBehaviour
     public static event CreatePlayer CreatePlayer;
     public static event PlayerHit PlayerHit;
     public static event PlayerFailedHit PlayerFailedHit;
+    public static event NewQuestion NewQuestion;
 
     private static NetworkManager Instance;
 
@@ -78,6 +80,9 @@ public class NetworkManager : MonoBehaviour
 
     private Dictionary<uint, LobbyPlayer> lPlayers = new Dictionary<uint, LobbyPlayer>();
     private Dictionary<uint, NetworkPlayer> players = new Dictionary<uint, NetworkPlayer>();
+
+    public static string Question { get; private set; }
+    public static string[] Answers { get; private set; }
 
     void Awake()
     {
@@ -227,6 +232,23 @@ public class NetworkManager : MonoBehaviour
                         if (debugMode)
                             Debug.Log($"[MATCHMAKER] [DEBUG] Received player update but player doesn't exist #{uid}");
                     }
+                }
+            }
+            if (message.Tag == NetworkTags.S_NewQuestionGenerated)
+            {
+                using (DarkRiftReader reader = message.GetReader())
+                {
+                    string questionMessage = reader.ReadString();
+                    int answersLength = reader.ReadInt32();
+                    string[] newAnswers = new string[answersLength];
+                    for (int i = 0; i < answersLength; i++)
+                        newAnswers[i] = reader.ReadString();
+
+                    if (NewQuestion != null)
+                        NewQuestion.Invoke(questionMessage, newAnswers);
+
+                    Answers = newAnswers;
+                    Question = questionMessage;
                 }
             }
         }

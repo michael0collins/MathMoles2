@@ -2,6 +2,7 @@
 using DarkRift.Server;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MathMoles
 {
@@ -24,6 +25,8 @@ namespace MathMoles
         public static readonly ushort S_CharacterPositionUpdate = 112;
         public static readonly ushort S_CharacterHitData = 113;
         public static readonly ushort S_CharacterFailedHitData = 114;
+
+        public static readonly ushort S_NewQuestionGenerated = 151;
     }
 
     public enum PlayerStatus
@@ -78,13 +81,95 @@ namespace MathMoles
         PLAYING
     }
 
+    public struct Answer
+    {
+        public string message;
+
+        public Answer(string message)
+        {
+            this.message = message;
+        }
+    }
+
+    public class Question
+    {
+        public string message;
+        public int correctAnswer;
+        public Answer[] answers = new Answer[4];
+        public bool questionGenerated = false;
+
+        public void GenerateNewQuestion()
+        {
+            Random random = new Random();
+            Random random_question_number = new Random();
+            Random random_answer_number = new Random();
+
+            int messageType = random.Next(0, 3);
+            int firstNumber = random_question_number.Next(1, 10);
+            int secondNumber = random_question_number.Next(1, 10);
+            int correctAnswer = 0;
+            switch (messageType)
+            {
+                case 0:
+                    //ADD
+                    correctAnswer = firstNumber + secondNumber;
+                    message = $"{firstNumber} + {secondNumber} = ?";
+                    answers[0] = new Answer($"{correctAnswer}");
+                    answers[1] = new Answer($"{random_answer_number.Next(1, 100)}");
+                    answers[2] = new Answer($"{random_answer_number.Next(1, 100)}");
+                    answers[3] = new Answer($"{random_answer_number.Next(1, 100)}");
+                    break;
+                case 1:
+                    //SUBTRACT
+                    correctAnswer = firstNumber - secondNumber;
+                    message = $"{firstNumber} - {secondNumber} = ?";
+                    answers[0] = new Answer($"{correctAnswer}");
+                    answers[1] = new Answer($"{random_answer_number.Next(1, 100)}");
+                    answers[2] = new Answer($"{random_answer_number.Next(1, 100)}");
+                    answers[3] = new Answer($"{random_answer_number.Next(1, 100)}");
+                    break;
+                case 2:
+                    //MULTIPLY
+                    correctAnswer = firstNumber * secondNumber;
+                    message = $"{firstNumber} * {secondNumber} = ?";
+                    answers[0] = new Answer($"{correctAnswer}");
+                    answers[1] = new Answer($"{random_answer_number.Next(1, 100)}");
+                    answers[2] = new Answer($"{random_answer_number.Next(1, 100)}");
+                    answers[3] = new Answer($"{random_answer_number.Next(1, 100)}");
+                    break;
+                case 3:
+                    //DIVIDE
+                    while (firstNumber % secondNumber > 0)
+                    {
+                        firstNumber = random_question_number.Next(1, 10);
+                        secondNumber = random_question_number.Next(1, 10);
+                    }
+                    correctAnswer = firstNumber % secondNumber;
+                    message = $"{firstNumber} / {secondNumber} = ?";
+                    answers[0] = new Answer($"{correctAnswer}");
+                    answers[1] = new Answer($"{random_answer_number.Next(1, 100)}");
+                    answers[2] = new Answer($"{random_answer_number.Next(1, 100)}");
+                    answers[3] = new Answer($"{random_answer_number.Next(1, 100)}");
+                    break;
+            }
+            Random rnd = new Random();
+            answers = answers.OrderBy(x => rnd.Next()).ToArray();
+            questionGenerated = true;
+        }
+    }
+
     public class Room
     {
         public uint UID;
         public RoomStatus status = RoomStatus.AWAITING_PLAYERS;
         public Dictionary<uint, Player> players = new Dictionary<uint, Player>();
 
+        public Question currentQuestion;
+
         public int MaxPlayers = 4;
+        public int MinPlayers = 2;
+        public bool Open = true;
+
         public int PlayersAmount
         {
             get
@@ -92,7 +177,6 @@ namespace MathMoles
                 return players.Count;
             }
         }
-        public bool Open = true;
 
         public Room(uint uid, int maxPlayers)
         {
@@ -104,12 +188,13 @@ namespace MathMoles
         {
             lock (players)
             {
-                MathMoles.Log("Start game " + players.Values.Count);
                 Open = false;
                 foreach (Player p in players.Values)
                     using (DarkRiftWriter writer = DarkRiftWriter.Create())
                     using (Message message = Message.Create(NetworkTags.S_LoadGameScene, writer))
                         p.Client.SendMessage(message, SendMode.Reliable);
+
+                GenerateQuestion();
             }
         }
 
@@ -122,7 +207,6 @@ namespace MathMoles
                     if (p.SceneLoaded == false)
                         allPlayersLoaded = false;
 
-                MathMoles.Log("CheckForRoundStart()");
                 if (allPlayersLoaded && status == RoomStatus.AWAITING_PLAYERS)
                 {
                     status = RoomStatus.PLAYING;
@@ -144,6 +228,44 @@ namespace MathMoles
 
                     MathMoles.Log("All players loaded!");
                 }
+            }
+        }
+
+        public void UpdateLobbyData()
+        {
+            foreach (Player p in players.Values)
+                SendPlayersList(p);
+        }
+
+        public void GenerateQuestion()
+        {
+            currentQuestion = new Question();
+            currentQuestion.GenerateNewQuestion();
+            while (!currentQuestion.questionGenerated)
+            {
+
+            }
+            SendCurrentQuestion();
+        }
+
+        public void SendCurrentQuestion()
+        {
+            if (currentQuestion == null)
+                return;
+
+            lock (players)
+            {
+                foreach (Player p in players.Values)
+                    using (DarkRiftWriter writer = DarkRiftWriter.Create())
+                    {
+                        writer.Write(currentQuestion.message);
+                        writer.Write(currentQuestion.answers.Length);
+                        for (int i = 0; i < currentQuestion.answers.Length; i++)
+                            writer.Write(currentQuestion.answers[i].message);
+
+                        using (Message message = Message.Create(NetworkTags.S_NewQuestionGenerated, writer))
+                            p.Client.SendMessage(message, SendMode.Unreliable);
+                    }
             }
         }
 
@@ -222,12 +344,6 @@ namespace MathMoles
             }
         }
 
-        public void UpdateLobbyData()
-        {
-            foreach (Player p in players.Values)
-                SendPlayersList(p);
-        }
-
         public void RemovePlayer(Player player)
         {
             lock (players)
@@ -263,7 +379,7 @@ namespace MathMoles
 
                 MathMoles.Log($"New player '{player.Username}#{player.UID}' joined room #{UID}");
 
-                if (players.Count >= 2)
+                if (players.Count >= MinPlayers)
                 {
                     MathMoles.Log($"Starting countdown for room #{UID}!");
                     StartGame();
