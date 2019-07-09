@@ -102,106 +102,124 @@ namespace MathMoles
 
         public void StartGame()
         {
-            MathMoles.Log("Start game " + players.Values.Count);
-            Open = false;
-            foreach (Player p in players.Values)
-                using (DarkRiftWriter writer = DarkRiftWriter.Create())
+            lock (players)
+            {
+                MathMoles.Log("Start game " + players.Values.Count);
+                Open = false;
+                foreach (Player p in players.Values)
+                    using (DarkRiftWriter writer = DarkRiftWriter.Create())
                     using (Message message = Message.Create(NetworkTags.S_LoadGameScene, writer))
                         p.Client.SendMessage(message, SendMode.Reliable);
+            }
         }
 
         public void CheckForRoundStart()
         {
-            bool allPlayersLoaded = true;
-            foreach (Player p in players.Values)
-                if (p.SceneLoaded == false)
-                    allPlayersLoaded = false;
-
-            MathMoles.Log("CheckForRoundStart()");
-            if (allPlayersLoaded && status == RoomStatus.AWAITING_PLAYERS)
+            lock (players)
             {
-                status = RoomStatus.PLAYING;
+                bool allPlayersLoaded = true;
                 foreach (Player p in players.Values)
-                    using (DarkRiftWriter writer = DarkRiftWriter.Create())
-                    {
-                        int spawnPoint = 0;
-                        writer.Write(players.Values.Count);
-                        foreach (Player item in players.Values)
-                        {
-                            writer.Write(item.UID);
-                            writer.Write(item.Username);
-                            writer.Write(spawnPoint);
-                            spawnPoint++;
-                        }
-                        using (Message message = Message.Create(NetworkTags.S_SpawnPlayers, writer))
-                            p.Client.SendMessage(message, SendMode.Reliable);
-                    }
+                    if (p.SceneLoaded == false)
+                        allPlayersLoaded = false;
 
-                MathMoles.Log("All players loaded!");
+                MathMoles.Log("CheckForRoundStart()");
+                if (allPlayersLoaded && status == RoomStatus.AWAITING_PLAYERS)
+                {
+                    status = RoomStatus.PLAYING;
+                    foreach (Player p in players.Values)
+                        using (DarkRiftWriter writer = DarkRiftWriter.Create())
+                        {
+                            int spawnPoint = 0;
+                            writer.Write(players.Values.Count);
+                            foreach (Player item in players.Values)
+                            {
+                                writer.Write(item.UID);
+                                writer.Write(item.Username);
+                                writer.Write(spawnPoint);
+                                spawnPoint++;
+                            }
+                            using (Message message = Message.Create(NetworkTags.S_SpawnPlayers, writer))
+                                p.Client.SendMessage(message, SendMode.Reliable);
+                        }
+
+                    MathMoles.Log("All players loaded!");
+                }
             }
         }
 
         public void SendPlayerPosition(Player player)
         {
-            foreach (Player p in players.Values)
-                using (DarkRiftWriter writer = DarkRiftWriter.Create())
-                {
-                    writer.Write(player.UID);
-                    writer.Write(player.Position.x);
-                    writer.Write(player.Position.y);
-                    writer.Write(player.Position.z);
-                    writer.Write(player.Rotation.x);
-                    writer.Write(player.Rotation.y);
-                    writer.Write(player.Rotation.z);
-                    writer.Write(player.animationSpeed);
+            lock (players)
+            {
+                foreach (Player p in players.Values)
+                    using (DarkRiftWriter writer = DarkRiftWriter.Create())
+                    {
+                        writer.Write(player.UID);
+                        writer.Write(player.Position.x);
+                        writer.Write(player.Position.y);
+                        writer.Write(player.Position.z);
+                        writer.Write(player.Rotation.x);
+                        writer.Write(player.Rotation.y);
+                        writer.Write(player.Rotation.z);
+                        writer.Write(player.animationSpeed);
 
-                    using (Message message = Message.Create(NetworkTags.S_CharacterPositionUpdate, writer))
-                        p.Client.SendMessage(message, SendMode.Reliable);
-                }
+                        using (Message message = Message.Create(NetworkTags.S_CharacterPositionUpdate, writer))
+                            p.Client.SendMessage(message, SendMode.Unreliable);
+                    }
+            }
         }
 
         public void SendPlayersList(Player player)
         {
-            foreach (Player p in players.Values)
-                using (DarkRiftWriter writer = DarkRiftWriter.Create())
-                {
-                    writer.Write(players.Values.Count);
-                    foreach (Player item in players.Values)
+            lock (players)
+            {
+                foreach (Player p in players.Values)
+                    using (DarkRiftWriter writer = DarkRiftWriter.Create())
                     {
-                        writer.Write(item.UID);
-                        writer.Write(item.Username);
-                    }
+                        writer.Write(players.Values.Count);
+                        foreach (Player item in players.Values)
+                        {
+                            writer.Write(item.UID);
+                            writer.Write(item.Username);
+                        }
 
-                    using (Message message = Message.Create(NetworkTags.S_UpdateLobbyPlayers, writer))
-                        player.Client.SendMessage(message, SendMode.Reliable);
-                }
+                        using (Message message = Message.Create(NetworkTags.S_UpdateLobbyPlayers, writer))
+                            player.Client.SendMessage(message, SendMode.Reliable);
+                    }
+            }
         }
 
         public void SendPlayerHitData(Player source, Player target, Vec3 position)
         {
-            foreach (Player p in players.Values)
-                using (DarkRiftWriter writer = DarkRiftWriter.Create())
-                {
-                    writer.Write(source.UID);
-                    writer.Write(target.UID);
-                    writer.Write(position.x);
-                    writer.Write(position.y);
-                    writer.Write(position.z);
+            lock (players)
+            {
+                foreach (Player p in players.Values)
+                    using (DarkRiftWriter writer = DarkRiftWriter.Create())
+                    {
+                        writer.Write(source.UID);
+                        writer.Write(target.UID);
+                        writer.Write(position.x);
+                        writer.Write(position.y);
+                        writer.Write(position.z);
 
-                    using (Message message = Message.Create(NetworkTags.S_CharacterHitData, writer))
-                        p.Client.SendMessage(message, SendMode.Reliable);
-                }
+                        using (Message message = Message.Create(NetworkTags.S_CharacterHitData, writer))
+                            p.Client.SendMessage(message, SendMode.Reliable);
+                    }
+            }
         }
 
         public void SendPlayerFailedHitData(Player source)
         {
-            foreach (Player p in players.Values)
-                using (DarkRiftWriter writer = DarkRiftWriter.Create())
-                {
-                    writer.Write(source.UID);
-                    using (Message message = Message.Create(NetworkTags.S_CharacterFailedHitData, writer))
-                        p.Client.SendMessage(message, SendMode.Reliable);
-                }
+            lock(players)
+            {
+                foreach (Player p in players.Values)
+                    using (DarkRiftWriter writer = DarkRiftWriter.Create())
+                    {
+                        writer.Write(source.UID);
+                        using (Message message = Message.Create(NetworkTags.S_CharacterFailedHitData, writer))
+                            p.Client.SendMessage(message, SendMode.Reliable);
+                    }
+            }
         }
 
         public void UpdateLobbyData()
@@ -212,38 +230,44 @@ namespace MathMoles
 
         public void RemovePlayer(Player player)
         {
-            if (!players.ContainsKey(player.UID) && player.Room != this)
-                return;
+            lock (players)
+            {
+                if (!players.ContainsKey(player.UID) && player.Room != this)
+                    return;
 
-            players.Remove(player.UID);
-            player.Room = null;
+                players.Remove(player.UID);
+                player.Room = null;
 
-            UpdateLobbyData();
+                UpdateLobbyData();
 
-            MathMoles.Log($"Player '{player.Username}#{player.UID}' left room #{UID}");
+                MathMoles.Log($"Player '{player.Username}#{player.UID}' left room #{UID}");
 
-            if (players.Count <= 0)
-                MathMoles.DestroyRoom(this);
+                if (players.Count <= 0)
+                    MathMoles.DestroyRoom(this);
+            }
         }
 
         public void AddPlayer(Player player)
         {
-            if (players.ContainsKey(player.UID) && player.Room != null)
-                return;
-
-            player.Room = this;
-            player.FoundLobby();
-
-            players.Add(player.UID, player);
-
-            UpdateLobbyData();
-
-            MathMoles.Log($"New player '{player.Username}#{player.UID}' joined room #{UID}");
-
-            if (players.Count >= 2)
+            lock (players)
             {
-                MathMoles.Log($"Starting countdown for room #{UID}!");
-                StartGame();
+                if (players.ContainsKey(player.UID) && player.Room != null)
+                    return;
+
+                player.Room = this;
+                player.FoundLobby();
+
+                players.Add(player.UID, player);
+
+                UpdateLobbyData();
+
+                MathMoles.Log($"New player '{player.Username}#{player.UID}' joined room #{UID}");
+
+                if (players.Count >= 2)
+                {
+                    MathMoles.Log($"Starting countdown for room #{UID}!");
+                    StartGame();
+                }
             }
         }
     }
@@ -281,23 +305,29 @@ namespace MathMoles
 
         public Room GetFreeRoomOrCreate()
         {
-            foreach (Room room in rooms.Values)
+            lock (Instance.rooms)
             {
-                if (room.Open && room.PlayersAmount < room.MaxPlayers)
-                    return room;
-            }
+                foreach (Room room in rooms.Values)
+                {
+                    if (room.Open && room.PlayersAmount < room.MaxPlayers)
+                        return room;
+                }
 
-            return CreateRoom();
+                return CreateRoom();
+            }
         }
 
         public static void DestroyRoom(Room room)
         {
-            if (!Instance.rooms.ContainsKey(room.UID))
-                return;
+            lock (Instance.rooms)
+            {
+                if (!Instance.rooms.ContainsKey(room.UID))
+                    return;
 
-            Log($"Room #{room.UID} destroyed.");
+                Log($"Room #{room.UID} destroyed.");
 
-            Instance.rooms.Remove(room.UID);
+                Instance.rooms.Remove(room.UID);
+            }
         }
 
         private static Random playersUID = new Random();
@@ -329,15 +359,18 @@ namespace MathMoles
 
         private void ClientDisconnected(object sender, ClientDisconnectedEventArgs e)
         {
-            Player player = GetPlayer(e.Client);
-            if (player != null)
+            lock (players)
             {
-                if (player.Room != null)
-                    player.Room.RemovePlayer(player);
+                Player player = GetPlayer(e.Client);
+                if (player != null)
+                {
+                    if (player.Room != null)
+                        player.Room.RemovePlayer(player);
 
-                Log($"Player '{player.Username}#{player.UID}' disconnected.");
+                    Log($"Player '{player.Username}#{player.UID}' disconnected.");
 
-                players.Remove(player.UID);
+                    players.Remove(player.UID);
+                }
             }
         }
 
@@ -349,22 +382,28 @@ namespace MathMoles
                 {
                     using (DarkRiftReader reader = message.GetReader())
                     {
-                        string username = reader.ReadString();
-                        uint playerUID = rnd32Player();
-                        Player newPlayer = new Player(e.Client, playerUID, username);
-                        newPlayer.Introduced();
-                        players.Add(playerUID, newPlayer);
-                        WriteEvent($"New player '{username} #{playerUID}' connected!", LogType.Info);
+                        lock (players)
+                        {
+                            string username = reader.ReadString();
+                            uint playerUID = rnd32Player();
+                            Player newPlayer = new Player(e.Client, playerUID, username);
+                            newPlayer.Introduced();
+                            players.Add(playerUID, newPlayer);
+                            WriteEvent($"New player '{username} #{playerUID}' connected!", LogType.Info);
+                        }
                     }
                     return;
                 }
                 if (message.Tag == NetworkTags.LookingForMatch)
                 {
-                    Player player = GetPlayer(e.Client);
-                    player.Status = PlayerStatus.LOOKING_FOR_MATCH;
+                    lock (rooms)
+                    {
+                        Player player = GetPlayer(e.Client);
+                        player.Status = PlayerStatus.LOOKING_FOR_MATCH;
 
-                    Room freeRoom = GetFreeRoomOrCreate();
-                    freeRoom.AddPlayer(player);
+                        Room freeRoom = GetFreeRoomOrCreate();
+                        freeRoom.AddPlayer(player);
+                    }
                     return;
                 }
                 if (message.Tag == NetworkTags.GameSceneLoaded)
@@ -432,12 +471,15 @@ namespace MathMoles
 
         public Room CreateRoom()
         {
-            uint roomUID = rnd32Room();
-            Room newRoom = new Room(roomUID, maxPlayers: 4);
-            rooms.Add(roomUID, newRoom);
+            lock (rooms)
+            {
+                uint roomUID = rnd32Room();
+                Room newRoom = new Room(roomUID, maxPlayers: 4);
+                rooms.Add(roomUID, newRoom);
 
-            WriteEvent($"New room created! #{roomUID}", LogType.Info);
-            return newRoom;
+                WriteEvent($"New room created! #{roomUID}", LogType.Info);
+                return newRoom;
+            }
         }
 
         private static uint rnd32Room()
