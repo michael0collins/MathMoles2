@@ -2771,8 +2771,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d45ae6507e801420392054b826f2a3d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  introDelay: 5
-  roundDuration: 30
+  ingamePanel: {fileID: 1271742592}
   cameraPrefab: {fileID: 6404222297877099260, guid: f767f0e11c82a0041bfe92717931aab2,
     type: 3}
   playerPrefab: {fileID: 732043546380536239, guid: 6d981e8aaa7cd254cad3eb14bac9a1d8,

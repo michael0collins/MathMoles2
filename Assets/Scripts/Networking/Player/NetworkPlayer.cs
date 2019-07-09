@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class NetworkPlayer : MonoBehaviour
 {
@@ -14,19 +13,27 @@ public class NetworkPlayer : MonoBehaviour
     public Vector3 oldPosition;
     public Vector3 oldRotation;
 
-    public void Awake()
-    {
-        newPosition = transform.position;
-        newRotation = transform.rotation.eulerAngles;
+    public GameObject nametagCanvas;
+    public Text nametag;
 
-        oldPosition = transform.position;
-        oldRotation = transform.rotation.eulerAngles;
+    private Rigidbody rb;
+    private PlayerController pc;
+
+    private void Awake()
+    {
+        pc = GetComponent<PlayerController>();
+        rb = GetComponent<Rigidbody>();
     }
 
     public void UpdateData(Vector3 position, Vector3 rotation)
     {
         newPosition = position;
         newRotation = rotation;
+    }
+
+    public void UpdateAnimationSpeed(float speed)
+    {
+        pc.AnimationSpeed = speed;
     }
 
     public void FixedUpdate()
@@ -38,13 +45,19 @@ public class NetworkPlayer : MonoBehaviour
         }
         else
         {
-            if (Vector3.Distance(transform.position, oldPosition) <= 0.1f)
+            if (oldPosition == null)
+                oldPosition = transform.position;
+            if (oldRotation == null)
+                oldRotation = transform.rotation.eulerAngles;
+
+            if (Vector3.Distance(transform.position, oldPosition) >= 0.1f)
             {
-                Debug.Log("1");
                 oldPosition = transform.position;
                 oldRotation = transform.rotation.eulerAngles;
-                NetworkManager.SendLocalCharacterData(this, transform.position, transform.eulerAngles);
+                NetworkManager.SendLocalCharacterData(this, transform.position, transform.eulerAngles, rb.velocity.magnitude);
             }
         }
+
+        nametagCanvas.transform.LookAt(Camera.main.transform);
     }
 }

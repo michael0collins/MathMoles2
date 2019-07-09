@@ -40,6 +40,7 @@ namespace MathMoles
 
         public Vec3 Position = new Vec3(0, 0, 0);
         public Vec3 Rotation = new Vec3(0, 0, 0);
+        public float animationSpeed = 0f;
         public bool SceneLoaded = false;
 
         public Player(IClient client, uint uid, string username)
@@ -100,8 +101,8 @@ namespace MathMoles
             Open = false;
             foreach (Player p in players.Values)
                 using (DarkRiftWriter writer = DarkRiftWriter.Create())
-                    using (Message message = Message.Create(NetworkTags.S_LoadGameScene, writer))
-                        p.Client.SendMessage(message, SendMode.Reliable);
+                using (Message message = Message.Create(NetworkTags.S_LoadGameScene, writer))
+                    p.Client.SendMessage(message, SendMode.Reliable);
         }
 
         public void CheckForRoundStart()
@@ -111,8 +112,9 @@ namespace MathMoles
                 if (p.SceneLoaded == false)
                     allPlayersLoaded = false;
 
-            if (allPlayersLoaded)
+            if (allPlayersLoaded && status == RoomStatus.AWAITING_PLAYERS)
             {
+                status = RoomStatus.PLAYING;
                 foreach (Player p in players.Values)
                     using (DarkRiftWriter writer = DarkRiftWriter.Create())
                     {
@@ -136,20 +138,20 @@ namespace MathMoles
         public void SendPlayerPosition(Player player)
         {
             foreach (Player p in players.Values)
-                if (p != player)
-                    using (DarkRiftWriter writer = DarkRiftWriter.Create())
-                    {
-                        writer.Write(player.UID);
-                        writer.Write(player.Position.x);
-                        writer.Write(player.Position.y);
-                        writer.Write(player.Position.z);
-                        writer.Write(player.Rotation.x);
-                        writer.Write(player.Rotation.y);
-                        writer.Write(player.Rotation.z);
+                using (DarkRiftWriter writer = DarkRiftWriter.Create())
+                {
+                    writer.Write(player.UID);
+                    writer.Write(player.Position.x);
+                    writer.Write(player.Position.y);
+                    writer.Write(player.Position.z);
+                    writer.Write(player.Rotation.x);
+                    writer.Write(player.Rotation.y);
+                    writer.Write(player.Rotation.z);
+                    writer.Write(player.animationSpeed);
 
-                        using (Message message = Message.Create(NetworkTags.S_CharacterPositionUpdate, writer))
-                            player.Client.SendMessage(message, SendMode.Reliable);
-                    }
+                    using (Message message = Message.Create(NetworkTags.S_CharacterPositionUpdate, writer))
+                        p.Client.SendMessage(message, SendMode.Reliable);
+                }
         }
 
         public void SendPlayersList(Player player)
@@ -287,7 +289,8 @@ namespace MathMoles
         private void ClientDisconnected(object sender, ClientDisconnectedEventArgs e)
         {
             Player player = GetPlayer(e.Client);
-            if (player != null) {
+            if (player != null)
+            {
                 if (player.Room != null)
                     player.Room.RemovePlayer(player);
 
@@ -303,7 +306,7 @@ namespace MathMoles
             {
                 if (message.Tag == NetworkTags.Introduce)
                 {
-                    lock(players)
+                    lock (players)
                     {
                         using (DarkRiftReader reader = message.GetReader())
                         {
@@ -312,7 +315,7 @@ namespace MathMoles
                             Player newPlayer = new Player(e.Client, playerUID, username);
                             newPlayer.Introduced();
                             players.Add(playerUID, newPlayer);
-                            WriteEvent($"New player '{username} #{playerUID}' connected!", LogType.Info);           
+                            WriteEvent($"New player '{username} #{playerUID}' connected!", LogType.Info);
                         }
                     }
                     return;
@@ -334,7 +337,8 @@ namespace MathMoles
                     player.Room.CheckForRoundStart();
                     return;
                 }
-                if (message.Tag == NetworkTags.CharacterPositionUpdate) {
+                if (message.Tag == NetworkTags.CharacterPositionUpdate)
+                {
                     Player player = GetPlayer(e.Client);
                     if (player != null)
                     {
@@ -348,10 +352,10 @@ namespace MathMoles
                             rotation.x = reader.ReadSingle();
                             rotation.y = reader.ReadSingle();
                             rotation.z = reader.ReadSingle();
+                            player.animationSpeed = reader.ReadSingle();
                             player.Position = position;
                             player.Rotation = rotation;
                             player.Room.SendPlayerPosition(player);
-                            WriteEvent($"Player position update from {player.Username}", LogType.Info);
                         }
                     }
                 }

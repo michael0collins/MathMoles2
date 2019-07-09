@@ -156,7 +156,9 @@ public class NetworkManager : MonoBehaviour
                     uint uid = reader.ReadUInt32();
                     NetworkPlayer player;
                     players.TryGetValue(uid, out player);
-                    if (player != null)
+                    if (debugMode)
+                        Debug.Log($"[MATCHMAKER] [DEBUG] S_CharacterPositionUpdate '{player.username}#{player.uid}'");
+                    if (player != null && player.uid != UID)
                     {
                         Vector3 position = Vector3.zero;
                         Vector3 rotation = Vector3.zero;
@@ -167,26 +169,10 @@ public class NetworkManager : MonoBehaviour
                         rotation.y = reader.ReadSingle();
                         rotation.z = reader.ReadSingle();
                         player.UpdateData(position, rotation);
-
-                        if (debugMode)
-                            Debug.Log($"[MATCHMAKER] [DEBUG] S_CharacterPositionUpdate '{player.username}'");
+                        player.UpdateAnimationSpeed(reader.ReadSingle());
                     }
                 }
             }
-            /*if (message.Tag == NetworkTags.Movement)
-            {
-                using (DarkRiftReader reader = message.GetReader())
-                {
-                    //Read message
-                    Vector3 newPosition = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
-                    Vector3 newRotation = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
-                    ushort id = reader.ReadUInt16();
-
-                    //Update characters to move to new positions
-                    //characters[id].NewPosition = newPosition;
-                    //characters[id].NewRotation = newRotation;
-                }
-            }*/
         }
     }
 
@@ -228,7 +214,7 @@ public class NetworkManager : MonoBehaviour
             Debug.Log($"[MATCHMAKER] [DEBUG] Registered network player '{player.username}#{player.uid}'");
     }
 
-    public static void SendLocalCharacterData(NetworkPlayer player, Vector3 position, Vector3 rotation)
+    public static void SendLocalCharacterData(NetworkPlayer player, Vector3 position, Vector3 rotation, float animationSpeed)
     {
         using (DarkRiftWriter writer = DarkRiftWriter.Create())
         {
@@ -238,6 +224,7 @@ public class NetworkManager : MonoBehaviour
             writer.Write(rotation.x);
             writer.Write(rotation.y);
             writer.Write(rotation.z);
+            writer.Write(animationSpeed);
             using (Message message = Message.Create(NetworkTags.CharacterPositionUpdate, writer))
                 Instance.client.SendMessage(message, SendMode.Reliable);
         }

@@ -16,7 +16,7 @@ public class PlayerAnimationController : MonoBehaviour
 
     private void Update()
     {
-        float moveSpeed = pc.currentSpeed;
+        float moveSpeed = pc.AnimationSpeed;
         if (moveSpeed < 0) moveSpeed *= -1;
         anim.SetFloat("MovementSpeed", moveSpeed);
 

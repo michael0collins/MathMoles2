@@ -4,19 +4,12 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [Header("Delay/Timing")]
-    public float introDelay = 5.0f;
-    public float roundDuration = 30.0f;
+    [Header("User Interface")]
+    public GameObject ingamePanel;
 
-    [Header("Challenge Question")]
-    ChallengeQuestion challengeQuestion;
-
+    [Header("Map Setup")]
     public GameObject cameraPrefab;
     public GameObject playerPrefab;
-
-    private Vector3 spawnLocation;
-
-    public static bool IsLocalPlayerFrozen { get; private set; } = true;
 
     private Spawn[] spawnPoints;
 
@@ -34,6 +27,11 @@ public class GameManager : MonoBehaviour
         networkPlayer.uid = uid;
         networkPlayer.username = username;
         networkPlayer.isLocal = NetworkManager.UID == uid ? true : false;
+        networkPlayer.UpdateData(transform.position, transform.rotation.eulerAngles);
+        networkPlayer.oldPosition = transform.position;
+        networkPlayer.oldRotation = transform.rotation.eulerAngles;
+        networkPlayer.nametag.text = username;
+        networkPlayer.nametag.color = NetworkManager.UID == uid ? Color.green : Color.white;
         NetworkManager.RegisterNetworkPlayer(networkPlayer);
     }
 
@@ -47,5 +45,7 @@ public class GameManager : MonoBehaviour
     {
         GameObject cameraRig = Instantiate(cameraPrefab);
         spawnPoints = FindObjectsOfType<Spawn>();
+
+        ingamePanel.SetActive(true);
     }
 }

@@ -21,6 +21,8 @@ public class PlayerController : MonoBehaviour
     public bool isGrounded { get; private set; }
     public float currentSpeed { get; private set; } = 0f;
 
+    public float AnimationSpeed = 0f;
+
     private void Awake()
     {
         networkPlayer = GetComponent<NetworkPlayer>();
@@ -62,6 +64,8 @@ public class PlayerController : MonoBehaviour
             currentSpeed = groundedSpeed;
         else
             currentSpeed = airSpeed;
+
+        AnimationSpeed = rb.velocity.magnitude;
 
         if (playerInput == Vector2.zero)
             return;
