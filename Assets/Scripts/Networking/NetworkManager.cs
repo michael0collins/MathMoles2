@@ -17,6 +17,8 @@ public delegate void CreatePlayer(uint uid, string username, int spawnPoint);
 public delegate void PlayerHit(NetworkPlayer source, NetworkPlayer target, Vector3 position);
 public delegate void PlayerFailedHit(NetworkPlayer source);
 public delegate void NewQuestion(string question, string[] answers);
+public delegate void ConnectionToMasterFailed(string reason);
+public delegate void ConnectionToMasterSuccessfull();
 
 public class LobbyPlayer
 {
@@ -41,6 +43,7 @@ public class NetworkManager : MonoBehaviour
     public static string Username = "Guest";
     public static uint UID = 0;
     public static float LoadingProgress { get; private set; } = 0f;
+    public static bool OfflineMode { get; private set; } = true;
     public static Dictionary<uint, LobbyPlayer>.ValueCollection LobbyPlayers
     {
         get
@@ -73,6 +76,9 @@ public class NetworkManager : MonoBehaviour
     public static event PlayerHit PlayerHit;
     public static event PlayerFailedHit PlayerFailedHit;
     public static event NewQuestion NewQuestion;
+
+    public static event ConnectionToMasterFailed ConnectionToMasterFailed;
+    public static event ConnectionToMasterSuccessfull ConnectionToMasterSuccessfull;
 
     private static NetworkManager Instance;
 
@@ -332,7 +338,25 @@ public class NetworkManager : MonoBehaviour
     public void ConnectToMaster()
     {
         if (client.ConnectionState != ConnectionState.Connected)
-            client.Connect(client.Address, client.Port, client.IPVersion);
+            client.ConnectInBackground(client.Address, client.Port, client.IPVersion, (System.Exception e) =>
+            {
+                if (e != null)
+                {
+                    if (ConnectionToMasterFailed != null)
+                        ConnectionToMasterFailed.Invoke(e.Message);
+
+                    OfflineMode = true;
+                    userUID.text = "Offline";
+
+                    Debug.LogWarning($"Error occured while connecting to master server.\n'{e.Message}'");
+                    return;
+                }
+                else
+                    if (ConnectionToMasterSuccessfull != null)
+                        ConnectionToMasterSuccessfull.Invoke();
+
+                OfflineMode = false;
+            });
 
         using (DarkRiftWriter writer = DarkRiftWriter.Create())
         {
@@ -344,6 +368,12 @@ public class NetworkManager : MonoBehaviour
 
     public void FindMatch()
     {
+        if (OfflineMode)
+        {
+            StartCoroutine(LoadSceneAsync("TestArtScene"));
+            return;
+        }
+
         if (client.ConnectionState != ConnectionState.Connected)
             ConnectToMaster();
 

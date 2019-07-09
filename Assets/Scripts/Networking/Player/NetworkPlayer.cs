@@ -30,7 +30,7 @@ public class NetworkPlayer : MonoBehaviour
 #if UNITY_EDITOR
     [ReadOnly]
 #endif
-    public uint uid;
+    public uint uid = 0;
 #if UNITY_EDITOR
     [ReadOnly]
 #endif

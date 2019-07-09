@@ -83,5 +83,16 @@ public class GameManager : MonoBehaviour
         spawnPoints = FindObjectsOfType<Spawn>();
 
         ingamePanel.SetActive(true);
+
+        if (NetworkManager.OfflineMode)
+        {
+            GameObject devPlayer = Instantiate(playerPrefab);
+            devPlayer.GetComponent<Rigidbody>().isKinematic = false;
+            devPlayer.GetComponent<PlayerController>().debugMode = true;
+            devPlayer.GetComponent<NetworkPlayer>().nametag.text = "";
+            devPlayer.GetComponent<NetworkPlayer>().isLocal = true;
+            devPlayer.transform.position = spawnPoints[0].transform.position;
+
+        }
     }
 }
