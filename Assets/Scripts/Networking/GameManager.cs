@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    private static GameManager Instance;
+
     [Header("User Interface")]
     public GameObject ingamePanel;
+
+    public CustomButton jumpBtn;
 
     [Header("Map Setup")]
     public GameObject cameraPrefab;
@@ -17,6 +21,21 @@ public class GameManager : MonoBehaviour
     public Material[] helmetMaterials;
 
     private Spawn[] spawnPoints;
+
+    void Awake() {
+        Instance = this;
+
+        jumpBtn.ButtonPressed += OnJumpButtonPressed;
+    }
+
+    void OnJumpButtonPressed() {
+        JumpButton();
+    }
+
+    public static bool IsJumpButtonDown()
+    {
+        return Instance.jumpBtn.isPressedDown;
+    }
 
     public void HitButton()
     {
