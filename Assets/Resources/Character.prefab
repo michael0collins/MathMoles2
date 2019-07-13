@@ -4814,13 +4814,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundedSpeed: 3
   airSpeed: 2
-  jumpForce: 4.5
+  fallMultiplier: 3.5
+  lowJumpMultiplier: 2.5
+  jumpForce: 9
+  jumpButtonIsPressed: 0
   attackForce: 700
   attackDistance: 0.5
   attackFieldSize: 0.2
+  AnimationSpeed: 0
   playerAnimationController: {fileID: 976280054}
   debugMode: 0
-  AnimationSpeed: 0
 --- !u!114 &1783446385571682891
 MonoBehaviour:
   m_ObjectHideFlags: 0
