@@ -99,10 +99,12 @@ public class PlayerController : MonoBehaviour
         else
             currentSpeed = airSpeed;
 
-        AnimationSpeed = rb.velocity.magnitude;
+        AnimationSpeed = 0;
 
         if (playerInput == Vector2.zero)
             return;
+
+        AnimationSpeed = rb.velocity.magnitude;
 
         Vector3 velocity = new Vector3(playerInput.x * currentSpeed, rb.velocity.y, playerInput.y * currentSpeed);
         rb.velocity = velocity;

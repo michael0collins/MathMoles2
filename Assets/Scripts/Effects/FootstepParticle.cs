@@ -15,9 +15,11 @@ public class FootstepParticle : MonoBehaviour
 
     private void Update()
     {
-        if(pc.AnimationSpeed >= .1f)
+        if(pc.AnimationSpeed >= .1f) 
+        {
             if (!ps.isPlaying)
                 ps.Play();
+        }
         else
             if (ps.isPlaying)
                 ps.Stop();
