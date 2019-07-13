@@ -17,9 +17,13 @@ public class PlayerController : MonoBehaviour
     public float currentSpeed { get; private set; } = 0f;
 
     [Header("Player Interaction")]
+    public float attackCooldown = 1.0f;
     public float attackForce = 100f;
     public float attackDistance = 2f;
     public float attackFieldSize = 1f;
+    //Attack Cooldown
+    private float loggedAttacktime;
+    private bool canAttack;
 
     //Buttons for mobile use.
     private Button jumpButton;
@@ -55,6 +59,7 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         isGrounded = RayCastCollisionCheck(transform.position, Vector3.down, .7f, "Ground");
+        canAttack = Time.time - loggedAttacktime > attackCooldown ? true : false;
 
         if (networkPlayer.isLocal || debugMode)
         {
@@ -74,7 +79,7 @@ public class PlayerController : MonoBehaviour
         {
             playerInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
-            if (Input.GetKeyDown(KeyCode.F))
+            if (Input.GetKeyDown(KeyCode.F) && canAttack)
                 Attack();
 
             if (Input.GetKeyDown(KeyCode.Space))
@@ -159,13 +164,16 @@ public class PlayerController : MonoBehaviour
             return;
 
         playerAnimationController.AttackTrigger();
+        loggedAttacktime = Time.time;
         if (networkPlayer.isLocal)
         {
             RaycastHit hit;
             if (Physics.SphereCast(transform.position, attackFieldSize, transform.forward, out hit, attackDistance))
             {
                 if (hit.transform.gameObject.tag == "Player")
+                {
                     networkPlayer.SendHitData(hit.transform.GetComponent<NetworkPlayer>(), hit.point);
+                }
             }
             else
             {
