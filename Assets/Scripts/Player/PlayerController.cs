@@ -79,7 +79,7 @@ public class PlayerController : MonoBehaviour
         {
             playerInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
-            if (Input.GetKeyDown(KeyCode.F) && canAttack)
+            if (Input.GetKeyDown(KeyCode.F))
                 Attack();
 
             if (Input.GetKeyDown(KeyCode.Space))
@@ -136,13 +136,9 @@ public class PlayerController : MonoBehaviour
     private void JumpForceModifier()
     {
         if (rb.velocity.y < 0)
-        {
             rb.velocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
-        }
         else if (rb.velocity.y > 0 && !Input.GetKeyDown(KeyCode.Space))
-        {
             rb.velocity += Vector3.up * Physics.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
-        }
     }
 
     public void GetKnockedBack(Vector3 position)
@@ -163,22 +159,19 @@ public class PlayerController : MonoBehaviour
         if (!isGrounded)
             return;
 
+        if (!canAttack)
+            return;
+
         playerAnimationController.AttackTrigger();
         loggedAttacktime = Time.time;
         if (networkPlayer.isLocal)
         {
             RaycastHit hit;
             if (Physics.SphereCast(transform.position, attackFieldSize, transform.forward, out hit, attackDistance))
-            {
                 if (hit.transform.gameObject.tag == "Player")
-                {
                     networkPlayer.SendHitData(hit.transform.GetComponent<NetworkPlayer>(), hit.point);
-                }
-            }
             else
-            {
                 networkPlayer.SendFailedHitData();
-            }
         }
     }
     #endregion
