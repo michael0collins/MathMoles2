@@ -4818,9 +4818,11 @@ MonoBehaviour:
   lowJumpMultiplier: 2.5
   jumpForce: 9
   jumpButtonIsPressed: 0
+  attackCooldown: 1
   attackForce: 700
   attackDistance: 0.5
   attackFieldSize: 0.2
+  helmetObject: {fileID: 1298534752960554}
   AnimationSpeed: 0
   playerAnimationController: {fileID: 976280054}
   debugMode: 0
@@ -5179,6 +5181,12 @@ GameObject:
 --- !u!4 &4530706825424806 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4530706387961340, guid: 882990ebc59154b76a11495cd8985630,
+    type: 3}
+  m_PrefabInstance: {fileID: 708782682}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1298534752960554 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1298534046558832, guid: 882990ebc59154b76a11495cd8985630,
     type: 3}
   m_PrefabInstance: {fileID: 708782682}
   m_PrefabAsset: {fileID: 0}

@@ -3252,6 +3252,11 @@ MonoBehaviour:
   playerPrefab: {fileID: 732043546380536239, guid: 6d981e8aaa7cd254cad3eb14bac9a1d8,
     type: 3}
   hitParticle: {fileID: 100000, guid: f06e78284f831ae469c74624ab5d513b, type: 3}
+  helmetMaterials:
+  - {fileID: 2100000, guid: 44f4996818aa54a509323519080bac5f, type: 2}
+  - {fileID: 2100000, guid: ad44269e2a22cd34697aa9e1ff9eb490, type: 2}
+  - {fileID: 2100000, guid: b5b9ccc14f74e044b9bb579df192bb7c, type: 2}
+  - {fileID: 2100000, guid: a02b9c73280d5274faca41505cb0f67f, type: 2}
 --- !u!114 &1503185932
 MonoBehaviour:
   m_ObjectHideFlags: 0

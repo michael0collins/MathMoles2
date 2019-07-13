@@ -29,6 +29,8 @@ public class PlayerController : MonoBehaviour
     private Button jumpButton;
     private Button axeSwingButton;
 
+    //Helmet Colors
+    public GameObject helmetObject;
 
     //Animation
     [HideInInspector]

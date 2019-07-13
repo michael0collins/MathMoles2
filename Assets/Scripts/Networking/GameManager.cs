@@ -13,6 +13,9 @@ public class GameManager : MonoBehaviour
 
     public GameObject hitParticle;
 
+    //Helmets
+    public Material[] helmetMaterials;
+
     private Spawn[] spawnPoints;
 
     public void HitButton()
@@ -57,6 +60,8 @@ public class GameManager : MonoBehaviour
         GameObject newPlayer = Instantiate(playerPrefab);
         newPlayer.GetComponent<Rigidbody>().isKinematic = NetworkManager.UID == uid ? false : true;
         newPlayer.transform.position = spawnPoints[spawnPoint].transform.position;
+        PlayerController playerController = newPlayer.GetComponent<PlayerController>();
+        playerController.helmetObject.GetComponent<MeshRenderer>().material = helmetMaterials[spawnPoint];
         NetworkPlayer networkPlayer = newPlayer.GetComponent<NetworkPlayer>();
         networkPlayer.uid = uid;
         networkPlayer.username = username;
