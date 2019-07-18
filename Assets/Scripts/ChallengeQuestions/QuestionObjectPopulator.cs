@@ -7,12 +7,7 @@ public class QuestionObjectPopulator : MonoBehaviour
     private float letterSpacing = 1.25f;
     private const string path = "Symbols";
 
-    private void Start()
-    {
-        print(RetrieveSymbols("2@*@12"));
-    }
-
-    public Symbol[] RetrieveSymbols(string symbols)
+    public Symbol[] PopulateContainerWithSymbols(string symbols)
     {
         //Symbols must be sperated by '@' to seperate values with more than one character.
         //Create an array for each individual symbol(s)
@@ -64,5 +59,13 @@ public class QuestionObjectPopulator : MonoBehaviour
         }
         
         return retrievedSymbols;
+    }
+
+    public void ClearObjects()
+    {
+        foreach(Symbol s in GetComponentsInChildren<Symbol>())
+        {
+            s.TriggerOnClear();
+        }
     }
 }
