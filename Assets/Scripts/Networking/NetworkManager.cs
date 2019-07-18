@@ -20,6 +20,8 @@ public delegate void NewQuestion(string question, string[] answers);
 public delegate void ConnectionToMasterFailed(string reason);
 public delegate void ConnectionToMasterSuccessfull();
 
+public delegate void PlayerDisconnected(uint uid);
+
 public class LobbyPlayer
 {
     public uint UID { get; private set; }
@@ -255,6 +257,30 @@ public class NetworkManager : MonoBehaviour
 
                     Answers = newAnswers;
                     Question = questionMessage;
+                }
+            }
+            if (message.Tag == NetworkTags.S_PlayerQuit)
+            {
+                using (DarkRiftReader reader = message.GetReader())
+                {
+                    uint uid = reader.ReadUInt32();
+                    NetworkPlayer player;
+                    players.TryGetValue(uid, out player);
+                    if (player != null)
+                    {
+                        Debug.Log($"[MATCHMAKER] [DEBUG] Player #{uid} quit.");
+
+                        Destroy(player.gameObject);
+                        players.Remove(uid);
+
+                        if (uid == UID)
+                        {
+                            Debug.Log($"[MATCHMAKER] Loading menu...");
+                            StartCoroutine(LoadSceneAsync("Entry"));
+                        }
+                    }
+                    else
+                        Debug.Log($"[MATCHMAKER] [DEBUG] Received player quit but player doesn't exist #{uid}");
                 }
             }
         }

@@ -26,6 +26,8 @@ namespace MathMoles
         public static readonly ushort S_CharacterHitData = 113;
         public static readonly ushort S_CharacterFailedHitData = 114;
 
+        public static readonly ushort S_PlayerQuit = 130;
+
         public static readonly ushort S_NewQuestionGenerated = 151;
     }
 
@@ -346,21 +348,27 @@ namespace MathMoles
 
         public void RemovePlayer(Player player)
         {
-            lock (players)
-            {
-                if (!players.ContainsKey(player.UID) && player.Room != this)
-                    return;
+            if (!players.ContainsKey(player.UID) && player.Room != this)
+                return;
 
-                players.Remove(player.UID);
-                player.Room = null;
+            if (status == RoomStatus.PLAYING)
+                foreach (Player p in players.Values)
+                    using (DarkRiftWriter writer = DarkRiftWriter.Create())
+                    {
+                        writer.Write(player.UID);
+                        using (Message message = Message.Create(NetworkTags.S_PlayerQuit, writer))
+                            p.Client.SendMessage(message, SendMode.Reliable);
+                    }
 
-                UpdateLobbyData();
+            players.Remove(player.UID);
+            player.Room = null;
 
-                MathMoles.Log($"Player '{player.Username}#{player.UID}' left room #{UID}");
+            UpdateLobbyData();
 
-                if (players.Count <= 0)
-                    MathMoles.DestroyRoom(this);
-            }
+            MathMoles.Log($"Player '{player.Username}#{player.UID}' left room #{UID}");
+
+            if (players.Count <= 1)
+                MathMoles.DestroyRoom(this);
         }
 
         public void AddPlayer(Player player)
@@ -439,6 +447,9 @@ namespace MathMoles
             {
                 if (!Instance.rooms.ContainsKey(room.UID))
                     return;
+
+                foreach (Player p in room.players.Values)
+                    room.RemovePlayer(p);
 
                 Log($"Room #{room.UID} destroyed.");
 

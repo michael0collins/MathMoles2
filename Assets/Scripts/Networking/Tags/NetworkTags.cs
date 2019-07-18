@@ -18,5 +18,7 @@
     public static readonly ushort S_CharacterHitData = 113;
     public static readonly ushort S_CharacterFailedHitData = 114;
 
+    public static readonly ushort S_PlayerQuit = 130;
+
     public static readonly ushort S_NewQuestionGenerated = 151;
 }
