@@ -24,7 +24,7 @@ public class QuestionObjectPopulator : MonoBehaviour
 
     private void OnNewQuestion(string question, string[] answers)
     {
-        PopulateContainerWithSymbols("2@*@12");
+        StartCoroutine(QuestionRoutine(question, answers));
         //throw new NotImplementedException();
     }
 
@@ -61,7 +61,25 @@ public class QuestionObjectPopulator : MonoBehaviour
 
     public void ClearObjects()
     {
-        foreach(Symbol s in GetComponentsInChildren<Symbol>())
-            s.TriggerOnClear();
+        foreach (Symbol s in GetComponentsInChildren<Symbol>())
+            //s.TriggerOnClear();
+            Destroy(s.gameObject);
+    }
+
+    private IEnumerator QuestionRoutine(string question, string[] answers)
+    {
+        PopulateContainerWithSymbols(question);
+        yield return new WaitForSeconds(5.0f);
+        ClearObjects();
+        foreach(string s in answers)
+        {
+            PopulateContainerWithSymbols(s);
+            yield return new WaitForSeconds(2.5f);
+            foreach (Symbol symbol in GetComponentsInChildren<Symbol>())
+            {
+                symbol.TriggerTravelToObjectLocation();
+            }
+            ClearObjects(); //Remove once the objects can travel to their goal locations.
+        }
     }
 }

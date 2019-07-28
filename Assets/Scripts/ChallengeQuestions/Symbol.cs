@@ -9,13 +9,14 @@ public class Symbol : MonoBehaviour
         StartCoroutine(OnClear());
     }
 
-    public void TriggerTravelToObjectLocation(Transform location)
+    public void TriggerTravelToObjectLocation()
     {
-        StartCoroutine(TravelToGoalObjectLocation(location));
+        StartCoroutine(TravelToGoalObjectLocation());
     }
 
-    private IEnumerator TravelToGoalObjectLocation(Transform location)
+    private IEnumerator TravelToGoalObjectLocation()
     {
+        Debug.Log("Moving to goal area...");
         // move the object from it's spot in the sky down to it's goal location.
         yield return null;
     }
