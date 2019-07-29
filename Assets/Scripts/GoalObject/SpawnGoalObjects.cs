@@ -11,10 +11,10 @@ public class SpawnGoalObjects : MonoBehaviour
 
     void SpawnObjects()
     {
-        //Transform[] spawnLocation = GetComponentsInChildren<Transform>();
-        //foreach (Transform t in spawnLocation)
-        //{
-            //GameObject spawnObjectClone = Instantiate(FindObjectOfType<GameManager>().spawnObjectPrefab, t.position, Quaternion.identity) as GameObject;
-        //}   
+        Spawn[] spawnLocation = GetComponentsInChildren<Spawn>();
+        foreach (Spawn s in spawnLocation)
+        {
+            GameObject spawnObjectClone = Instantiate(FindObjectOfType<GameManager>().spawnObjectPrefab, s.transform.position, Quaternion.identity) as GameObject;
+        }   
     }
 }
