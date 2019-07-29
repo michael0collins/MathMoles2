@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     [Header("Map Setup")]
     public GameObject cameraPrefab;
     public GameObject playerPrefab;
+    public GameObject spawnObjectPrefab;
 
     public GameObject hitParticle;
 
@@ -23,6 +24,7 @@ public class GameManager : MonoBehaviour
     private Spawn[] spawnPoints;
 
     void Awake() {
+
         Instance = this;
 
         jumpBtn.ButtonPressed += OnJumpButtonPressed;

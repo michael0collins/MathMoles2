@@ -65,7 +65,7 @@ public class QuestionObjectPopulator : MonoBehaviour
             //s.TriggerOnClear();
             Destroy(s.gameObject);
     }
-
+    
     private IEnumerator QuestionRoutine(string question, string[] answers)
     {
         PopulateContainerWithSymbols(question);
@@ -83,3 +83,4 @@ public class QuestionObjectPopulator : MonoBehaviour
         }
     }
 }
+    
