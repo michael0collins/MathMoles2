@@ -7,6 +7,8 @@ TagManager:
   - Bullet
   - JumpButton
   - SwingAxeButton
+  - FxTemporaire
+  - GoalObject
   layers:
   - Default
   - TransparentFX

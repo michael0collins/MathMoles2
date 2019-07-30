@@ -22,8 +22,8 @@ public class PlayerController : MonoBehaviour
     public float attackDistance = 2f;
     public float attackFieldSize = 1f;
     //Attack Cooldown
-    private float loggedAttacktime;
-    private bool canAttack;
+    private float loggedSwingTime;
+    private bool canSwing;
 
     //Buttons for mobile use.
     private Button jumpButton;
@@ -61,7 +61,7 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         isGrounded = RayCastCollisionCheck(transform.position, Vector3.down, .7f, "Ground");
-        canAttack = Time.time - loggedAttacktime > attackCooldown ? true : false;
+        canSwing = Time.time - loggedSwingTime > attackCooldown ? true : false;
 
         if (networkPlayer.isLocal || debugMode)
         {
@@ -165,19 +165,30 @@ public class PlayerController : MonoBehaviour
         if (!isGrounded)
             return;
 
-        if (!canAttack)
+        if (!canSwing)
             return;
 
-        playerAnimationController.AttackTrigger();
-        loggedAttacktime = Time.time;
+        loggedSwingTime = Time.time;
         if (networkPlayer.isLocal)
         {
             RaycastHit hit;
             if (Physics.SphereCast(transform.position, attackFieldSize, transform.forward, out hit, attackDistance))
                 if (hit.transform.gameObject.tag == "Player")
+                {
+                    playerAnimationController.AttackTrigger();
                     networkPlayer.SendHitData(hit.transform.GetComponent<NetworkPlayer>(), hit.point);
-            else
-                networkPlayer.SendFailedHitData();
+                }
+                else if(hit.transform.gameObject.tag == "GoalObject")
+                {
+                    //play dig animation;
+                    //Reduce the goal object hit threshhold.
+                    print("Hit goalobject");
+                }
+                else
+                {
+                    networkPlayer.SendFailedHitData();
+                    //Missed axe attack animation.
+                }
         }
     }
     #endregion
