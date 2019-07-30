@@ -13,6 +13,7 @@ public delegate void CanceledJoiningLobby();
 public delegate void AddLobbyPlayer(string username);
 public delegate void MapLoadingStarted(string sceneName);
 public delegate void MapLoaded();
+public delegate void MainMenuLoaded();
 public delegate void CreatePlayer(uint uid, string username, int spawnPoint);
 public delegate void PlayerHit(NetworkPlayer source, NetworkPlayer target, Vector3 position);
 public delegate void PlayerFailedHit(NetworkPlayer source);
@@ -57,8 +58,7 @@ public class NetworkManager : MonoBehaviour
     {
         get
         {
-            NetworkPlayer localPlayer;
-            Instance.players.TryGetValue(UID, out localPlayer);
+            Instance.players.TryGetValue(UID, out NetworkPlayer localPlayer);
             if (localPlayer != null)
                 return localPlayer;
             else
@@ -73,6 +73,7 @@ public class NetworkManager : MonoBehaviour
 
     public static event MapLoadingStarted MapLoadingStarted;
     public static event MapLoaded MapLoaded;
+    public static event MainMenuLoaded MainMenuLoaded;
 
     public static event CreatePlayer CreatePlayer;
     public static event PlayerHit PlayerHit;
@@ -104,6 +105,8 @@ public class NetworkManager : MonoBehaviour
         }
 
         client.MessageReceived += Client_MessageReceived;
+
+        StartCoroutine(LoadSceneAsync("MainMenu", true));
 
         ConnectToMaster();
     }
@@ -160,10 +163,8 @@ public class NetworkManager : MonoBehaviour
             {
                 using (DarkRiftReader reader = message.GetReader())
                 {
-                    NetworkPlayer source;
-
                     uint suid = reader.ReadUInt32();
-                    players.TryGetValue(suid, out source);
+                    players.TryGetValue(suid, out NetworkPlayer source);
                     if (source != null)
                         if (PlayerFailedHit != null)
                             PlayerFailedHit.Invoke(source);
@@ -174,13 +175,11 @@ public class NetworkManager : MonoBehaviour
                 using (DarkRiftReader reader = message.GetReader())
                 {
                     Vector3 position = Vector3.zero;
-                    NetworkPlayer source;
-                    NetworkPlayer target;
 
                     uint suid = reader.ReadUInt32();
                     uint tuid = reader.ReadUInt32();
-                    players.TryGetValue(suid, out source);
-                    players.TryGetValue(tuid, out target);
+                    players.TryGetValue(suid, out NetworkPlayer source);
+                    players.TryGetValue(tuid, out NetworkPlayer target);
                     if (source != null && target != null)
                     {
                         position.x = reader.ReadSingle();
@@ -219,8 +218,7 @@ public class NetworkManager : MonoBehaviour
                 using (DarkRiftReader reader = message.GetReader())
                 {
                     uint uid = reader.ReadUInt32();
-                    NetworkPlayer player;
-                    players.TryGetValue(uid, out player);
+                    players.TryGetValue(uid, out NetworkPlayer player);
                     if (player != null)
                     {
                         if (player.uid != UID)
@@ -264,8 +262,7 @@ public class NetworkManager : MonoBehaviour
                 using (DarkRiftReader reader = message.GetReader())
                 {
                     uint uid = reader.ReadUInt32();
-                    NetworkPlayer player;
-                    players.TryGetValue(uid, out player);
+                    players.TryGetValue(uid, out NetworkPlayer player);
                     if (player != null)
                     {
                         Debug.Log($"[MATCHMAKER] [DEBUG] Player #{uid} quit.");
@@ -276,7 +273,7 @@ public class NetworkManager : MonoBehaviour
                         if (uid == UID)
                         {
                             Debug.Log($"[MATCHMAKER] Loading menu...");
-                            StartCoroutine(LoadSceneAsync("Entry"));
+                            StartCoroutine(LoadSceneAsync("MainMenu", true));
                         }
                     }
                     else
@@ -286,7 +283,7 @@ public class NetworkManager : MonoBehaviour
         }
     }
 
-    IEnumerator LoadSceneAsync(string sceneName)
+    IEnumerator LoadSceneAsync(string sceneName, bool isMainMenuScene = false)
     {
         if (debugMode)
             Debug.Log($"[DEBUG] Loading '{sceneName}' ...");
@@ -302,12 +299,18 @@ public class NetworkManager : MonoBehaviour
             yield return null;
         }
 
-        if (MapLoaded != null)
+        if (MapLoaded != null && !isMainMenuScene)
             MapLoaded.Invoke();
 
-        using (DarkRiftWriter writer = DarkRiftWriter.Create())
+        if (MainMenuLoaded != null && isMainMenuScene)
+            MainMenuLoaded.Invoke();
+
+        if (!isMainMenuScene)
+        {
+            using (DarkRiftWriter writer = DarkRiftWriter.Create())
             using (Message message = Message.Create(NetworkTags.GameSceneLoaded, writer))
                 client.SendMessage(message, SendMode.Reliable);
+        }
 
         if (debugMode)
             Debug.Log($"[DEBUG] Map '{sceneName}' loaded!");
@@ -390,6 +393,11 @@ public class NetworkManager : MonoBehaviour
             using (Message message = Message.Create(NetworkTags.Introduce, writer))
                 client.SendMessage(message, SendMode.Reliable);
         }
+    }
+
+    public static void SFindMatch()
+    {
+        Instance.FindMatch();
     }
 
     public void FindMatch()

@@ -57,6 +57,12 @@ public class GameManager : MonoBehaviour
         NetworkManager.MapLoaded += PreparePlayArena;
         NetworkManager.PlayerHit += OnPlayerHit;
         NetworkManager.PlayerFailedHit += OnPlayerFailedHit;
+        NetworkManager.MainMenuLoaded += OnMainMenuLoaded;
+    }
+
+    private void OnMainMenuLoaded()
+    {
+        ingamePanel.SetActive(false);
     }
 
     private void OnPlayerFailedHit(NetworkPlayer source)
@@ -100,6 +106,7 @@ public class GameManager : MonoBehaviour
         NetworkManager.CreatePlayer -= OnCreatePlayer;
         NetworkManager.MapLoaded -= PreparePlayArena;
         NetworkManager.PlayerHit -= OnPlayerHit;
+        NetworkManager.MainMenuLoaded -= OnMainMenuLoaded;
         NetworkManager.PlayerFailedHit -= OnPlayerFailedHit;
     }
 

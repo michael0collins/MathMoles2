@@ -51,6 +51,13 @@ public class LobbyInterface : MonoBehaviour
         NetworkManager.AddLobbyPlayer += OnAddLobbyPlayer;
         NetworkManager.MapLoadingStarted += OnMapLoadingStarted;
         NetworkManager.MapLoaded += OnMapLoaded;
+        NetworkManager.MainMenuLoaded += OnMainMenuLoaded;
+    }
+
+    private void OnMainMenuLoaded()
+    {
+        _mapLoaded = true;
+        loadingScreenPanel.SetActive(false);
     }
 
     private void OnMapLoaded()
@@ -98,5 +105,6 @@ public class LobbyInterface : MonoBehaviour
         NetworkManager.JoiningLobby -= OnJoiningLobby;
         NetworkManager.JoinedLobby -= OnJoinedLobby;
         NetworkManager.AddLobbyPlayer -= OnAddLobbyPlayer;
+        NetworkManager.MainMenuLoaded -= OnMainMenuLoaded;
     }
 }
