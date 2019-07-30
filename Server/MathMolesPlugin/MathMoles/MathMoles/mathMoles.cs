@@ -3,9 +3,18 @@ using DarkRift.Server;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Timers;
 
 namespace MathMoles
 {
+    public static class GlobalLobbySettings
+    {
+        public static int LOBBY_START_TIMER
+        {
+            get { return 5000; }
+        }
+    }
+
     public static class NetworkTags
     {
         public static readonly ushort Introduce = 0;
@@ -19,6 +28,7 @@ namespace MathMoles
         public static readonly ushort S_Introduced = 100;
         public static readonly ushort S_FoundLobby = 101;
         public static readonly ushort S_UpdateLobbyPlayers = 102;
+        public static readonly ushort S_LobbyTimerStarted = 103;
 
         public static readonly ushort S_LoadGameScene = 110;
         public static readonly ushort S_SpawnPlayers = 111;
@@ -162,6 +172,8 @@ namespace MathMoles
 
     public class Room
     {
+        private Timer startTimer;
+
         public uint UID;
         public RoomStatus status = RoomStatus.AWAITING_PLAYERS;
         public Dictionary<uint, Player> players = new Dictionary<uint, Player>();
@@ -188,13 +200,35 @@ namespace MathMoles
 
         public void StartGame()
         {
+            foreach (Player p in players.Values)
+                using (DarkRiftWriter writer = DarkRiftWriter.Create())
+                {
+                    writer.Write(GlobalLobbySettings.LOBBY_START_TIMER);
+                    using (Message message = Message.Create(NetworkTags.S_LobbyTimerStarted, writer))
+                        p.Client.SendMessage(message, SendMode.Reliable);
+                }
+
+            StartGameTimer();
+        }
+
+        private void StartGameTimer()
+        {
+            startTimer = new Timer(GlobalLobbySettings.LOBBY_START_TIMER);
+            startTimer.Elapsed += OnStartTimerElapsed;
+            startTimer.AutoReset = false;
+            startTimer.Enabled = true;
+        }
+
+        private void OnStartTimerElapsed(Object source, ElapsedEventArgs e)
+        {
+            MathMoles.Log($"Start game timer elapsed for lobby {UID}#UID");
             lock (players)
             {
                 Open = false;
                 foreach (Player p in players.Values)
                     using (DarkRiftWriter writer = DarkRiftWriter.Create())
-                    using (Message message = Message.Create(NetworkTags.S_LoadGameScene, writer))
-                        p.Client.SendMessage(message, SendMode.Reliable);
+                        using (Message message = Message.Create(NetworkTags.S_LoadGameScene, writer))
+                            p.Client.SendMessage(message, SendMode.Reliable);
 
                 GenerateQuestion();
             }
@@ -539,7 +573,9 @@ namespace MathMoles
                     player.Status = PlayerStatus.IN_GAME;
                     player.SceneLoaded = true;
 
-                    player.Room.CheckForRoundStart();
+                    if (player.Room != null)
+                        player.Room.CheckForRoundStart();
+
                     return;
                 }
                 if (message.Tag == NetworkTags.SendHitData)

@@ -11,6 +11,7 @@
     public static readonly ushort S_Introduced = 100;
     public static readonly ushort S_FoundLobby = 101;
     public static readonly ushort S_UpdateLobbyPlayers = 102;
+    public static readonly ushort S_LobbyTimerStarted = 103;
 
     public static readonly ushort S_LoadGameScene = 110;
     public static readonly ushort S_SpawnPlayers = 111;

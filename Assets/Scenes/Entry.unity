@@ -1298,6 +1298,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   localPlayerColor: {r: 0, g: 0.62428236, b: 1, a: 0.392}
   playerColor: {r: 0, g: 0, b: 0, a: 0.392}
+  lobbyStatusText: {fileID: 866275326}
   lobbyWaitingPanel: {fileID: 321801131}
   lobbyPanel: {fileID: 831539238}
   lobbyPlayers:

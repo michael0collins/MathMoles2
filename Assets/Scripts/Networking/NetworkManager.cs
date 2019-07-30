@@ -11,6 +11,7 @@ public delegate void JoinedLobby();
 public delegate void JoiningLobby();
 public delegate void CanceledJoiningLobby();
 public delegate void AddLobbyPlayer(string username);
+public delegate void LobbyTimerStarted(int timerms);
 public delegate void MapLoadingStarted(string sceneName);
 public delegate void MapLoaded();
 public delegate void MainMenuLoaded();
@@ -70,6 +71,7 @@ public class NetworkManager : MonoBehaviour
     public static event JoinedLobby JoinedLobby;
     public static event JoiningLobby JoiningLobby;
     public static event AddLobbyPlayer AddLobbyPlayer;
+    public static event LobbyTimerStarted LobbyTimerStarted;
 
     public static event MapLoadingStarted MapLoadingStarted;
     public static event MapLoaded MapLoaded;
@@ -115,6 +117,16 @@ public class NetworkManager : MonoBehaviour
     {
         using (Message message = e.GetMessage() as Message)
         {
+            if (message.Tag == NetworkTags.S_LobbyTimerStarted)
+            {
+                using (DarkRiftReader reader = message.GetReader())
+                {
+                    int timer = reader.ReadInt32();
+                    Debug.Log($"Lobby timer started for {timer}ms");
+                    if (LobbyTimerStarted != null)
+                        LobbyTimerStarted.Invoke(timer);
+                }
+            }
             if (message.Tag == NetworkTags.S_Introduced)
             {
                 using (DarkRiftReader reader = message.GetReader())

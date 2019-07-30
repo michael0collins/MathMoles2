@@ -23,7 +23,7 @@ public class CompilerNotification : Editor
     private static float alpha = 0f;
 
     //SessionSate survives compilation
-    private static bool hasStarted
+    private static bool HasStarted
     {
         get { return SessionState.GetBool("CN_STARTED", false); }
         set { SessionState.SetBool("CN_STARTED", value); }
@@ -36,11 +36,11 @@ public class CompilerNotification : Editor
     {
         if (EditorApplication.isCompiling)
         {
-            if (!hasStarted)
+            if (!HasStarted)
             {
                 startTime = DateTime.Now;
             }
-            hasStarted = true;
+            HasStarted = true;
 
 
             if (alpha <= 1f) alpha += DateTime.Now.Subtract(startTime).Milliseconds * 0.0001f;
@@ -48,10 +48,10 @@ public class CompilerNotification : Editor
         else
         {
             //Fire once
-            if (hasStarted == true)
+            if (HasStarted == true)
             {
                 endTime = DateTime.Now;
-                hasStarted = false;
+                HasStarted = false;
                 alpha = 1f;
 
                 EditorApplication.Beep();
@@ -82,7 +82,7 @@ public class CompilerNotification : Editor
         }
 
         Handles.BeginGUI();
-        if (hasStarted)
+        if (HasStarted)
         {
             rect = new Rect(sceneView.camera.pixelWidth - 135 - 10, sceneView.camera.pixelHeight - 35 - 10, 135, 35);
             EditorGUI.DrawRect(rect, bgColor);
@@ -101,7 +101,7 @@ public class CompilerNotification : Editor
 
     private static void Update()
     {
-        if (hasStarted == false) return;
+        if (HasStarted == false) return;
 
         spinTime += Time.deltaTime;
         animateTime += Time.deltaTime;

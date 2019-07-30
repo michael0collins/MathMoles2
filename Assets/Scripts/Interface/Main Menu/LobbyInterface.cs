@@ -9,6 +9,7 @@ public class LobbyInterface : MonoBehaviour
     public Color localPlayerColor;
     public Color playerColor;
 
+    public Text lobbyStatusText;
     public GameObject lobbyWaitingPanel;
     public GameObject lobbyPanel;
 
@@ -52,6 +53,23 @@ public class LobbyInterface : MonoBehaviour
         NetworkManager.MapLoadingStarted += OnMapLoadingStarted;
         NetworkManager.MapLoaded += OnMapLoaded;
         NetworkManager.MainMenuLoaded += OnMainMenuLoaded;
+        NetworkManager.LobbyTimerStarted += OnLobbyTimerStarted;
+    }
+
+    private void OnLobbyTimerStarted(int timerms)
+    {
+        StartCoroutine(LobbyCountdown(timerms));
+    }
+
+    private IEnumerator LobbyCountdown(int timems)
+    {
+        int seconds = timems / 1000;
+        for (int i = 0; i < timems; i++)
+        {
+            lobbyStatusText.text = $"Game starts in {seconds - i}...";
+            yield return new WaitForSeconds(1);
+        }
+        lobbyStatusText.text = "Game is starting now!";
     }
 
     private void OnMainMenuLoaded()
@@ -73,6 +91,7 @@ public class LobbyInterface : MonoBehaviour
         lobbyPanel.SetActive(false);
         loadingScreenPanel.SetActive(true);
         StartCoroutine(LoadingBar());
+        lobbyStatusText.text = "Waiting for players...";
     }
 
     private IEnumerator LoadingBar()
@@ -106,5 +125,6 @@ public class LobbyInterface : MonoBehaviour
         NetworkManager.JoinedLobby -= OnJoinedLobby;
         NetworkManager.AddLobbyPlayer -= OnAddLobbyPlayer;
         NetworkManager.MainMenuLoaded -= OnMainMenuLoaded;
+        NetworkManager.LobbyTimerStarted -= OnLobbyTimerStarted;
     }
 }
