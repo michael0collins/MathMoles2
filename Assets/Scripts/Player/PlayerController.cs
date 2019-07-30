@@ -13,14 +13,16 @@ public class PlayerController : MonoBehaviour
     public float lowJumpMultiplier = 2.5f;
     public float jumpForce = 9.0f;
     public bool jumpButtonIsPressed = false;
-    public bool isGrounded { get; private set; }
-    public float currentSpeed { get; private set; } = 0f;
+    public bool IsGrounded { get; private set; }
+    public float CurrentSpeed { get; private set; } = 0f;
 
     [Header("Player Interaction")]
     public float attackCooldown = 1.0f;
     public float attackForce = 100f;
     public float attackDistance = 2f;
     public float attackFieldSize = 1f;
+    public float jumpedOnHeadForce = 100f;
+    
     //Attack Cooldown
     private float loggedSwingTime;
     private bool canSwing;
@@ -38,7 +40,7 @@ public class PlayerController : MonoBehaviour
     public PlayerAnimationController playerAnimationController;
 
     //Network
-    public NetworkPlayer networkPlayer { get; private set; }
+    public NetworkPlayer NetworkPlayer { get; private set; }
 
     [Header("Debug")]
     public bool debugMode = false;
@@ -49,27 +51,33 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        #if UNITY_IPHONE || UNITY_ANDROID
-            PopulateMobileActionButtons
-        #endif
+        //#if UNITY_IPHONE || UNITY_ANDROID
+        //    PopulateMobileActionButtons
+        //#endif
 
-        networkPlayer = GetComponent<NetworkPlayer>();
+        NetworkPlayer = GetComponent<NetworkPlayer>();
         joyStick = FindObjectOfType<Joystick>();
         rb = GetComponent<Rigidbody>();
     }
 
     private void FixedUpdate()
     {
-        isGrounded = RayCastCollisionCheck(transform.position, Vector3.down, .7f, "Ground");
+        IsGrounded = RayCastCollisionCheck(transform.position, Vector3.down, .7f, "Ground");
         canSwing = Time.time - loggedSwingTime > attackCooldown ? true : false;
 
-        if (networkPlayer.isLocal || debugMode)
+        if (NetworkPlayer.isLocal || debugMode)
         {
             #if UNITY_IPHONE || UNITY_ANDROID
                 ProcessUserInput(true);
             #else
                 ProcessUserInput(false);
             #endif
+            RaycastHit playerHeadOnJumped = RayCastPlayerHeadOnCheck(transform.position, Vector3.down, .25f, "Player");
+            if (playerHeadOnJumped.collider != null)
+            {
+                Debug.Log("Above player");
+                rb.AddForce((transform.up + (transform.forward / 4)) * jumpedOnHeadForce);
+            }
         }
     }
 
@@ -94,10 +102,10 @@ public class PlayerController : MonoBehaviour
 
         playerInput.Normalize();
 
-        if (isGrounded)
-            currentSpeed = groundedSpeed;
+        if (IsGrounded)
+            CurrentSpeed = groundedSpeed;
         else
-            currentSpeed = airSpeed;
+            CurrentSpeed = airSpeed;
 
         AnimationSpeed = 0;
 
@@ -106,7 +114,7 @@ public class PlayerController : MonoBehaviour
 
         AnimationSpeed = rb.velocity.magnitude;
 
-        Vector3 velocity = new Vector3(playerInput.x * currentSpeed, rb.velocity.y, playerInput.y * currentSpeed);
+        Vector3 velocity = new Vector3(playerInput.x * CurrentSpeed, rb.velocity.y, playerInput.y * CurrentSpeed);
         rb.velocity = velocity;
         Vector3 rotVector = velocity;
         rotVector.y = 0;
@@ -126,14 +134,14 @@ public class PlayerController : MonoBehaviour
             Debug.Log("No button found with tag 'SwingAxeButton'");
 
         jumpButton.onClick.AddListener(Jump);
-        //axeSwingButton.onClick.AddListener(Jump); //Replace attack with swing axe, choose based on context what happens.
+        axeSwingButton.onClick.AddListener(Attack);
     }
     #endregion
 
     #region Movement&Spatial
     public void Jump()
     {
-        if (isGrounded)
+        if (IsGrounded)
             rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y + jumpForce, rb.velocity.z);
     }
 
@@ -154,31 +162,32 @@ public class PlayerController : MonoBehaviour
 
     bool RayCastCollisionCheck(Vector3 position, Vector3 direction, float distance, string layer)
     {
-        RaycastHit hit;
-        return Physics.Raycast(position, direction, out hit, distance, 1 << LayerMask.NameToLayer(layer));
+        return Physics.Raycast(position, direction, out RaycastHit hit, distance, 1 << LayerMask.NameToLayer(layer));
+    }
+
+    RaycastHit RayCastPlayerHeadOnCheck(Vector3 position, Vector3 direction, float distance, string layer)
+    {
+        Physics.SphereCast(position, 0.3f, direction, out RaycastHit hit, distance, 1 << LayerMask.NameToLayer(layer));
+        return hit;
     }
     #endregion
 
     #region Attack&Interaction
     public void Attack()
     {
-        if (!isGrounded)
-            return;
-
-        if (!canSwing)
+        if (!IsGrounded || !canSwing)
             return;
 
         loggedSwingTime = Time.time;
-        if (networkPlayer.isLocal)
+        if (NetworkPlayer.isLocal)
         {
-            RaycastHit hit;
-            if (Physics.SphereCast(transform.position, attackFieldSize, transform.forward, out hit, attackDistance))
+            if (Physics.SphereCast(transform.position, attackFieldSize, transform.forward, out RaycastHit hit, attackDistance))
                 if (hit.transform.gameObject.tag == "Player")
                 {
                     playerAnimationController.AttackTrigger();
-                    networkPlayer.SendHitData(hit.transform.GetComponent<NetworkPlayer>(), hit.point);
+                    NetworkPlayer.SendHitData(hit.transform.GetComponent<NetworkPlayer>(), hit.point);
                 }
-                else if(hit.transform.gameObject.tag == "GoalObject")
+                else if (hit.transform.gameObject.tag == "GoalObject")
                 {
                     //play dig animation;
                     //Reduce the goal object hit threshhold.
@@ -186,7 +195,7 @@ public class PlayerController : MonoBehaviour
                 }
                 else
                 {
-                    networkPlayer.SendFailedHitData();
+                    NetworkPlayer.SendFailedHitData();
                     //Missed axe attack animation.
                 }
         }
