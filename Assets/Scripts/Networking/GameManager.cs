@@ -85,9 +85,8 @@ public class GameManager : MonoBehaviour
     private void OnCreatePlayer(uint uid, string username, int spawnPoint)
     {
         GameObject newPlayer = Instantiate(playerPrefab);
-        newPlayer.GetComponent<Rigidbody>().isKinematic = NetworkManager.UID == uid ? false : true;
         newPlayer.transform.position = spawnPoints[spawnPoint].transform.position;
-        PlayerController playerController = newPlayer.GetComponent<PlayerController>();
+        PlayerControllerV playerController = newPlayer.GetComponent<PlayerControllerV>();
         playerController.helmetObject.GetComponent<MeshRenderer>().material = helmetMaterials[spawnPoint];
         NetworkPlayer networkPlayer = newPlayer.GetComponent<NetworkPlayer>();
         networkPlayer.uid = uid;

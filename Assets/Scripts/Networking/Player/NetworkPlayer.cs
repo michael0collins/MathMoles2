@@ -53,13 +53,13 @@ public class NetworkPlayer : MonoBehaviour
     public Text nametag;
 
     private Rigidbody rb;
-    public PlayerController pc { get; private set; }
+    public PlayerControllerV pc { get; private set; }
 
     private float _oldAnimationSpeed = 0f;
 
     private void Awake()
     {
-        pc = GetComponent<PlayerController>();
+        pc = GetComponent<PlayerControllerV>();
         rb = GetComponent<Rigidbody>();
     }
 
@@ -71,7 +71,7 @@ public class NetworkPlayer : MonoBehaviour
 
     public void UpdateAnimationSpeed(float speed)
     {
-        pc.AnimationSpeed = speed;
+        pc.PlayerVelocity = speed;
     }
 
     public void SendHitData(NetworkPlayer hittedPlayer, Vector3 position)
@@ -89,7 +89,7 @@ public class NetworkPlayer : MonoBehaviour
         if (!isLocal)
         {
             transform.position = Vector3.Lerp(transform.position, newPosition, Time.fixedDeltaTime * 10f);
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(newRotation), Time.fixedDeltaTime * 10f);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(newRotation), 12.5f * Time.deltaTime);
         }
         else
         {
@@ -98,9 +98,9 @@ public class NetworkPlayer : MonoBehaviour
             if (oldRotation == null)
                 oldRotation = transform.rotation.eulerAngles;
 
-            if (Vector3.Distance(transform.position, oldPosition) >= 0.1f || Quaternion.Angle(transform.rotation, Quaternion.Euler(oldRotation)) >= 1f || Mathf.Abs(_oldAnimationSpeed - pc.AnimationSpeed) >= 0.1f)
+            if (Vector3.Distance(transform.position, oldPosition) >= 0.1f || Quaternion.Angle(transform.rotation, Quaternion.Euler(oldRotation)) >= 1f || Mathf.Abs(_oldAnimationSpeed - pc.PlayerVelocity) >= 0.1f)
             {
-                _oldAnimationSpeed = pc.AnimationSpeed;
+                _oldAnimationSpeed = pc.PlayerVelocity;
                 oldPosition = transform.position;
                 oldRotation = transform.rotation.eulerAngles;
                 NetworkManager.SendLocalCharacterData(this, transform.position, transform.eulerAngles, rb.velocity.magnitude);

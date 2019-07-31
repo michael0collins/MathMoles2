@@ -4,24 +4,23 @@ using UnityEngine;
 
 public class FootstepParticle : MonoBehaviour
 {
-    private ParticleSystem ps;
-    private PlayerController pc;
+    public float playerVelocity = 0f;
+    public ParticleSystem particleSystem = null;
 
     private void Start()
     {
-        ps = GetComponentInChildren<ParticleSystem>();
-        pc = GetComponentInParent<PlayerController>();
+        particleSystem = GetComponentInChildren<ParticleSystem>();
     }
 
     private void Update()
     {
-        if(pc.AnimationSpeed >= .1f) 
+        if(playerVelocity >= .1f) 
         {
-            if (!ps.isPlaying)
-                ps.Play();
+            if (!particleSystem.isPlaying)
+                particleSystem.Play();
         }
         else
-            if (ps.isPlaying)
-                ps.Stop();
+            if (particleSystem.isPlaying)
+                particleSystem.Stop();
     }
 }
