@@ -24,6 +24,7 @@ namespace MathMoles
         public static readonly ushort CharacterPositionUpdate = 12;
         public static readonly ushort SendHitData = 13;
         public static readonly ushort SendFailedHitData = 14;
+        public static readonly ushort SendGoalHitData = 15;
 
         public static readonly ushort S_Introduced = 100;
         public static readonly ushort S_FoundLobby = 101;
@@ -35,6 +36,8 @@ namespace MathMoles
         public static readonly ushort S_CharacterPositionUpdate = 112;
         public static readonly ushort S_CharacterHitData = 113;
         public static readonly ushort S_CharacterFailedHitData = 114;
+        public static readonly ushort S_SendGoalHitData = 115;
+        public static readonly ushort S_PlayerWon = 116;
 
         public static readonly ushort S_PlayerQuit = 130;
 
@@ -96,10 +99,12 @@ namespace MathMoles
     public struct Answer
     {
         public string message;
+        public int health;
 
         public Answer(string message)
         {
             this.message = message;
+            this.health = 10;
         }
     }
 
@@ -227,8 +232,8 @@ namespace MathMoles
                 Open = false;
                 foreach (Player p in players.Values)
                     using (DarkRiftWriter writer = DarkRiftWriter.Create())
-                        using (Message message = Message.Create(NetworkTags.S_LoadGameScene, writer))
-                            p.Client.SendMessage(message, SendMode.Reliable);
+                    using (Message message = Message.Create(NetworkTags.S_LoadGameScene, writer))
+                        p.Client.SendMessage(message, SendMode.Reliable);
 
                 GenerateQuestion();
             }
@@ -368,7 +373,7 @@ namespace MathMoles
 
         public void SendPlayerFailedHitData(Player source)
         {
-            lock(players)
+            lock (players)
             {
                 foreach (Player p in players.Values)
                     using (DarkRiftWriter writer = DarkRiftWriter.Create())
@@ -378,6 +383,33 @@ namespace MathMoles
                             p.Client.SendMessage(message, SendMode.Reliable);
                     }
             }
+        }
+
+        public void SendGoalHitData(Player source, int goal)
+        {
+            currentQuestion.answers[goal].health--;
+            if (currentQuestion.answers[goal].health <= 0)
+            {
+                if (goal == currentQuestion.correctAnswer)
+                    foreach (Player p in players.Values)
+                        using (DarkRiftWriter writer = DarkRiftWriter.Create())
+                        {
+                            writer.Write(source.UID);
+                            using (Message message = Message.Create(NetworkTags.S_PlayerWon, writer))
+                                p.Client.SendMessage(message, SendMode.Reliable);
+                        }
+                    return;
+            }
+            else
+                foreach (Player p in players.Values)
+                    using (DarkRiftWriter writer = DarkRiftWriter.Create())
+                    {
+                        writer.Write(source.UID);
+                        writer.Write(goal);
+                        writer.Write(currentQuestion.answers[goal].health);
+                        using (Message message = Message.Create(NetworkTags.S_SendGoalHitData, writer))
+                            p.Client.SendMessage(message, SendMode.Reliable);
+                    }           
         }
 
         public void RemovePlayer(Player player)
@@ -604,6 +636,18 @@ namespace MathMoles
                     Player player = GetPlayer(e.Client);
                     if (player != null)
                         player.Room.SendPlayerFailedHitData(player);
+
+                    return;
+                }
+                if (message.Tag == NetworkTags.SendGoalHitData)
+                {
+                    Player player = GetPlayer(e.Client);
+                    if (player != null)
+                        using (DarkRiftReader reader = message.GetReader())
+                        {
+                            int answerIndex = reader.ReadInt32();
+                            player.Room.SendGoalHitData(player, answerIndex);
+                        }
 
                     return;
                 }

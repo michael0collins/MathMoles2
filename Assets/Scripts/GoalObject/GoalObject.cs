@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GoalObject : MonoBehaviour
 {
+    public int goalIndex;
     public int hitsToCollect = 5;
     public string answer = "";
 

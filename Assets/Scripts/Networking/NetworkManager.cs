@@ -18,6 +18,8 @@ public delegate void MainMenuLoaded();
 public delegate void CreatePlayer(uint uid, string username, int spawnPoint);
 public delegate void PlayerHit(NetworkPlayer source, NetworkPlayer target, Vector3 position);
 public delegate void PlayerFailedHit(NetworkPlayer source);
+public delegate void PlayerHitAnswerObject(NetworkPlayer source, int answerIndex, int answerHealth);
+public delegate void PlayerWon(NetworkPlayer source);
 public delegate void NewQuestion(string question, string[] answers);
 public delegate void ConnectionToMasterFailed(string reason);
 public delegate void ConnectionToMasterSuccessfull();
@@ -81,6 +83,8 @@ public class NetworkManager : MonoBehaviour
     public static event PlayerHit PlayerHit;
     public static event PlayerFailedHit PlayerFailedHit;
     public static event NewQuestion NewQuestion;
+    public static event PlayerHitAnswerObject PlayerHitAnswerObject;
+    public static event PlayerWon PlayerWon;
 
     public static event ConnectionToMasterFailed ConnectionToMasterFailed;
     public static event ConnectionToMasterSuccessfull ConnectionToMasterSuccessfull;
@@ -180,6 +184,30 @@ public class NetworkManager : MonoBehaviour
                     if (source != null)
                         if (PlayerFailedHit != null)
                             PlayerFailedHit.Invoke(source);
+                }
+            }
+            if (message.Tag == NetworkTags.S_SendGoalHitData)
+            {
+                using (DarkRiftReader reader = message.GetReader())
+                {
+                    uint suid = reader.ReadUInt32();
+                    players.TryGetValue(suid, out NetworkPlayer source);
+                    int goalIndex = reader.ReadInt32();
+                    int goalHealth = reader.ReadInt32();
+                    if (source != null)
+                        if (PlayerHitAnswerObject != null)
+                            PlayerHitAnswerObject.Invoke(source, goalIndex, goalHealth);
+                }
+            }
+            if (message.Tag == NetworkTags.S_PlayerWon)
+            {
+                using (DarkRiftReader reader = message.GetReader())
+                {
+                    uint suid = reader.ReadUInt32();
+                    players.TryGetValue(suid, out NetworkPlayer source);
+                    if (source != null)
+                        if (PlayerWon != null)
+                            PlayerWon.Invoke(source);
                 }
             }
             if (message.Tag == NetworkTags.S_CharacterHitData)
@@ -372,6 +400,16 @@ public class NetworkManager : MonoBehaviour
             writer.Write(rotation.z);
             writer.Write(animationSpeed);
             using (Message message = Message.Create(NetworkTags.CharacterPositionUpdate, writer))
+                Instance.client.SendMessage(message, SendMode.Reliable);
+        }
+    }
+
+    public static void SendLocalGoalHitData(int goalIndex)
+    {
+        using (DarkRiftWriter writer = DarkRiftWriter.Create())
+        {
+            writer.Write(goalIndex);
+            using (Message message = Message.Create(NetworkTags.SendGoalHitData, writer))
                 Instance.client.SendMessage(message, SendMode.Reliable);
         }
     }

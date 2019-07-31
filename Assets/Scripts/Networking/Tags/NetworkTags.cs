@@ -7,6 +7,7 @@
     public static readonly ushort CharacterPositionUpdate = 12;
     public static readonly ushort SendHitData = 13;
     public static readonly ushort SendFailedHitData = 14;
+    public static readonly ushort SendGoalHitData = 15;
 
     public static readonly ushort S_Introduced = 100;
     public static readonly ushort S_FoundLobby = 101;
@@ -18,6 +19,8 @@
     public static readonly ushort S_CharacterPositionUpdate = 112;
     public static readonly ushort S_CharacterHitData = 113;
     public static readonly ushort S_CharacterFailedHitData = 114;
+    public static readonly ushort S_SendGoalHitData = 115;
+    public static readonly ushort S_PlayerWon = 116;
 
     public static readonly ushort S_PlayerQuit = 130;
 

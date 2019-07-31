@@ -57,10 +57,10 @@ public class PlayerControllerV : MonoBehaviour
     private void Update()
     {
         Grounded = _characterController.isGrounded;
-        PlayerVelocity = _characterController.velocity.magnitude;
 
         if (NetworkPlayer.isLocal)
         {
+            PlayerVelocity = _characterController.velocity.magnitude;
             CanSwing = Time.time - loggedSwingTime > attackCooldown ? true : false;
         #if UNITY_IPHONE || UNITY_ANDROID
             Vector2 input = new Vector2(joyStick.Horizontal, joyStick.Vertical);
@@ -130,6 +130,7 @@ public class PlayerControllerV : MonoBehaviour
                     //Reduce the goal object hit threshhold.
                     playerAnimationController.SetTrigger("Attack");
                     print("Hit goalobject");
+                    NetworkPlayer.SendGoalHitData(hit.transform.gameObject.GetComponent<GoalObject>().goalIndex);
                 }
                 else
                 {

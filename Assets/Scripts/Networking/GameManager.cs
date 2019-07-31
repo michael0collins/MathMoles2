@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour
     private void OnPlayerFailedHit(NetworkPlayer source)
     {
         if (source.uid != NetworkManager.UID)
-            source.pc.Attack();
+            source.pc.playerAnimationController.SetTrigger("Attack");
     }
 
     private void OnPlayerHit(NetworkPlayer source, NetworkPlayer target, Vector3 position)

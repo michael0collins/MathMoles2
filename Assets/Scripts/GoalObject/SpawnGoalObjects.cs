@@ -19,6 +19,7 @@ public class SpawnGoalObjects : MonoBehaviour
             Vector3 location = new Vector3(transform.position.x + (i * spacing), transform.position.y, transform.position.z);
             GoalObject goalObjectClone = Instantiate(goalObjectPrefab, location, Quaternion.identity) as GoalObject;
             goalObjectClone.answer = NetworkManager.Answers[i];
+            goalObjectClone.goalIndex = i;
         }
     }
 }

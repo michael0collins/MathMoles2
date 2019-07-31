@@ -82,6 +82,11 @@ public class NetworkPlayer : MonoBehaviour
         NetworkManager.SendLocalFailedHitData();
     }
 
+    public void SendGoalHitData(int goalIndex)
+    {
+        NetworkManager.SendLocalGoalHitData(goalIndex);
+    }
+
     public void FixedUpdate()
     {
         if (!isLocal)
