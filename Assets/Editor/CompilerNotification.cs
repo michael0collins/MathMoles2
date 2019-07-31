@@ -139,7 +139,7 @@ public class CompilerNotification : Editor
 
         defaultColor = GUI.contentColor;
 
-        SceneView.onSceneGUIDelegate += OnScene;
+        SceneView.duringSceneGui += OnScene;
         EditorApplication.update += Update;
     }
 

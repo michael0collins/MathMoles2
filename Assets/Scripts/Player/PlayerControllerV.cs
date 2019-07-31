@@ -22,7 +22,7 @@ public class PlayerControllerV : MonoBehaviour
 
     //Attack cooldown
     private float loggedSwingTime;
-    private bool canSwing;
+    private bool CanSwing = true;
 
     private Vector3 moveDirection = Vector3.zero;
 
@@ -47,13 +47,11 @@ public class PlayerControllerV : MonoBehaviour
 
     private void Awake()
     {
+        _characterController = GetComponent<CharacterController>();
         NetworkPlayer = GetComponent<NetworkPlayer>();
         joyStick = FindObjectOfType<Joystick>();
-    }
 
-    private void Start()
-    {
-        _characterController = GetComponent<CharacterController>();
+        loggedSwingTime = Time.time;
     }
 
     private void Update()
@@ -63,6 +61,8 @@ public class PlayerControllerV : MonoBehaviour
 
         if (NetworkPlayer.isLocal)
         {
+            CanSwing = Time.time - loggedSwingTime > attackCooldown ? true : false;
+
             Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
             input.Normalize();
 
@@ -105,7 +105,7 @@ public class PlayerControllerV : MonoBehaviour
 
     public void Attack()
     {
-        if (!Grounded || !canSwing)
+        if (!Grounded || !CanSwing)
             return;
 
         loggedSwingTime = Time.time;
@@ -121,6 +121,7 @@ public class PlayerControllerV : MonoBehaviour
                 {
                     //play dig animation;
                     //Reduce the goal object hit threshhold.
+                    playerAnimationController.SetTrigger("Attack");
                     print("Hit goalobject");
                 }
                 else

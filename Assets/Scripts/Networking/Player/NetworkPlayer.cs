@@ -52,7 +52,6 @@ public class NetworkPlayer : MonoBehaviour
     public GameObject nametagCanvas;
     public Text nametag;
 
-    private Rigidbody rb;
     public PlayerControllerV pc { get; private set; }
 
     private float _oldAnimationSpeed = 0f;
@@ -60,7 +59,6 @@ public class NetworkPlayer : MonoBehaviour
     private void Awake()
     {
         pc = GetComponent<PlayerControllerV>();
-        rb = GetComponent<Rigidbody>();
     }
 
     public void UpdateData(Vector3 position, Vector3 rotation)
@@ -103,7 +101,7 @@ public class NetworkPlayer : MonoBehaviour
                 _oldAnimationSpeed = pc.PlayerVelocity;
                 oldPosition = transform.position;
                 oldRotation = transform.rotation.eulerAngles;
-                NetworkManager.SendLocalCharacterData(this, transform.position, transform.eulerAngles, rb.velocity.magnitude);
+                NetworkManager.SendLocalCharacterData(this, transform.position, transform.eulerAngles, pc.PlayerVelocity);
             }
         }
 

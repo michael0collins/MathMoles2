@@ -231,14 +231,12 @@ namespace DarkRift.Client.Unity
         {
             //Remove resources
             Close();
-            Debug.Log("Destroy");
         }
 
         void OnApplicationQuit()
         {
             //Remove resources
             Close();
-            Debug.Log("Quit");
         }
 
         /// <summary>
