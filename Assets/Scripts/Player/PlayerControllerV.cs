@@ -62,8 +62,11 @@ public class PlayerControllerV : MonoBehaviour
         if (NetworkPlayer.isLocal)
         {
             CanSwing = Time.time - loggedSwingTime > attackCooldown ? true : false;
-
+        #if UNITY_IPHONE || UNITY_ANDROID
+            Vector2 input = new Vector2(joyStick.Horizontal, joyStick.Vertical);
+        #else
             Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        #endif
             input.Normalize();
 
             float oldYVelocity = Grounded ? 0f : moveDirection.y;
@@ -84,7 +87,11 @@ public class PlayerControllerV : MonoBehaviour
 
             if (input != Vector2.zero)
             {
+            #if UNITY_IPHONE || UNITY_ANDROID
+                Vector3 rotationVector = new Vector3(joyStick.Horizontal, 0, joyStick.Vertical);
+            #else
                 Vector3 rotationVector = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
+            #endif
                 if (rotationVector != Vector3.zero)
                     transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(rotationVector), 12.5f * Time.deltaTime);
             }
