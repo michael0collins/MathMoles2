@@ -173,22 +173,22 @@ public class PlayerController : MonoBehaviour
         {
             RaycastHit hit;
             if (Physics.SphereCast(transform.position, attackFieldSize, transform.forward, out hit, attackDistance))
+            {
                 if (hit.transform.gameObject.tag == "Player")
                 {
                     playerAnimationController.AttackTrigger();
                     networkPlayer.SendHitData(hit.transform.GetComponent<NetworkPlayer>(), hit.point);
                 }
-                else if(hit.transform.gameObject.tag == "GoalObject")
+                else if (hit.transform.gameObject.tag == "GoalObject")
                 {
-                    //play dig animation;
-                    //Reduce the goal object hit threshhold.
-                    print("Hit goalobject");
+                    hit.collider.GetComponent<GoalObject>().hitsToCollect--;
                 }
                 else
                 {
                     networkPlayer.SendFailedHitData();
                     //Missed axe attack animation.
                 }
+            }
         }
     }
     #endregion
