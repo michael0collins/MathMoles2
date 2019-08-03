@@ -4,21 +4,21 @@ using UnityEngine;
 
 public class Symbol : MonoBehaviour
 {
-    public void TriggerOnClear()
+    public string value;
+    private float spacing = 1.0f;
+
+    private void Start()
     {
-        StartCoroutine(OnClear());
+        RetrieveSymbolMeshes(value);
     }
 
-    public void TriggerTravelToObjectLocation()
+    private void RetrieveSymbolMeshes(string meshes)
     {
-        StartCoroutine(TravelToGoalObjectLocation());
-    }
-
-    private IEnumerator TravelToGoalObjectLocation()
-    {
-        Debug.Log("Moving to goal area...");
-        // move the object from it's spot in the sky down to it's goal location.
-        yield return null;
+        foreach(char c in meshes)
+        {
+            print("Game/SymbolModels/" + c);
+            GameObject symbol = Resources.Load("Game/SymbolModels/" + c) as GameObject;
+        }
     }
 
     private IEnumerator OnClear()
