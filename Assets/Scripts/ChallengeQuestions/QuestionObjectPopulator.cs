@@ -10,11 +10,11 @@ public class QuestionObjectPopulator : MonoBehaviour
     public GameObject symbolPrefab;
 
     [Header("Variables")]
-    public float letterSpacing = 1.25f;
+    public float symbolSpacing = 1.25f;
 
     private void Start()
     {
-        PopulateContainerWithSymbols("12@*@2@=");
+       
     }
 
     private void OnEnable()
@@ -29,7 +29,7 @@ public class QuestionObjectPopulator : MonoBehaviour
 
     private void OnNewQuestion(string question, string[] answers)
     {
-        //StartCoroutine(QuestionRoutine(question, answers));
+        StartCoroutine(QuestionRoutine(question, answers));
         //throw new NotImplementedException();
     }
 
@@ -42,9 +42,21 @@ public class QuestionObjectPopulator : MonoBehaviour
 
         //For each symbol in the array, create a container object (symbol) and set it's symbol value.
         //The container will then handle spawning in the meshes.
+
+        int indexSpacer = 0;
+
         foreach(string s in processedSymbols)
         {
-            Symbol symbolClone = Instantiate(symbolPrefab, ) as Symbol;
+            //Create offset for symbol container
+            Vector3 position = new Vector3(transform.position.x + (indexSpacer * symbolSpacing),
+                transform.position.y, transform.position.z);
+
+            GameObject symbolClone = Instantiate(symbolPrefab, position, Quaternion.identity, this.transform) as GameObject;
+            
+            //Set the symbol value (the value is the meshes that will be spawned).
+            symbolClone.GetComponent<Symbol>().value = s;
+
+            indexSpacer++;
         }
 
         return retrievedSymbols;
@@ -57,7 +69,6 @@ public class QuestionObjectPopulator : MonoBehaviour
             Destroy(s.gameObject);
     }
     
-    /*
     private IEnumerator QuestionRoutine(string question, string[] answers)
     {
         PopulateContainerWithSymbols(question);
@@ -69,11 +80,10 @@ public class QuestionObjectPopulator : MonoBehaviour
             yield return new WaitForSeconds(2.5f);
             foreach (Symbol symbol in GetComponentsInChildren<Symbol>())
             {
-                symbol.TriggerTravelToObjectLocation();
+                //symbol.TriggerTravelToObjectLocation();
             }
             ClearObjects(); //Remove once the objects can travel to their goal locations.
         }
     }
-    */
 }
     

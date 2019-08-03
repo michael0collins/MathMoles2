@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.1273174, g: 0.13414761, b: 0.12107885, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2529,7 +2529,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   symbolPrefab: {fileID: 7251628073687153506, guid: 6b11d66420372154582ec5ffe089e14a,
     type: 3}
-  letterSpacing: 1.25
+  symbolSpacing: 1.25
 --- !u!1 &1323252689
 GameObject:
   m_ObjectHideFlags: 0
@@ -2958,100 +2958,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1512054787}
   m_CullTransparentMesh: 0
---- !u!1001 &1532814680
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 7251628073687153506, guid: 6b11d66420372154582ec5ffe089e14a,
-        type: 3}
-      propertyPath: m_Name
-      value: Symbol
-      objectReference: {fileID: 0}
-    - target: {fileID: 8555414784360214941, guid: 6b11d66420372154582ec5ffe089e14a,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8555414784360214941, guid: 6b11d66420372154582ec5ffe089e14a,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8555414784360214941, guid: 6b11d66420372154582ec5ffe089e14a,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8555414784360214941, guid: 6b11d66420372154582ec5ffe089e14a,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8555414784360214941, guid: 6b11d66420372154582ec5ffe089e14a,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8555414784360214941, guid: 6b11d66420372154582ec5ffe089e14a,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8555414784360214941, guid: 6b11d66420372154582ec5ffe089e14a,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8555414784360214941, guid: 6b11d66420372154582ec5ffe089e14a,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8555414784360214941, guid: 6b11d66420372154582ec5ffe089e14a,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8555414784360214941, guid: 6b11d66420372154582ec5ffe089e14a,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8555414784360214941, guid: 6b11d66420372154582ec5ffe089e14a,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1002561855702875307, guid: 6b11d66420372154582ec5ffe089e14a,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 9113824018515248680, guid: 6b11d66420372154582ec5ffe089e14a,
-        type: 3}
-      propertyPath: m_textInfo.characterCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9113824018515248680, guid: 6b11d66420372154582ec5ffe089e14a,
-        type: 3}
-      propertyPath: m_textInfo.wordCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9113824018515248680, guid: 6b11d66420372154582ec5ffe089e14a,
-        type: 3}
-      propertyPath: m_textInfo.lineCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9113824018515248680, guid: 6b11d66420372154582ec5ffe089e14a,
-        type: 3}
-      propertyPath: m_textInfo.pageCount
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 6b11d66420372154582ec5ffe089e14a, type: 3}
 --- !u!1 &1601034581
 GameObject:
   m_ObjectHideFlags: 0
