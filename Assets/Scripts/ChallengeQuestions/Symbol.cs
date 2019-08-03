@@ -15,7 +15,7 @@ public class Symbol : MonoBehaviour
     private void RetrieveSymbolMeshes(string symbols)
     {
         int indexSpacer = 0;
-        print("Trying to instantiate " + symbols);
+
         foreach(char c in symbols)
         {
             //convert string into readable value by unity.
@@ -32,7 +32,7 @@ public class Symbol : MonoBehaviour
                     symbolValue = "Add";
                     break;
                 case "-":
-                    symbolValue = "Subrtact";
+                    symbolValue = "Subtract";
                     break;
                 case "=":
                     symbolValue = "Equals";
@@ -44,9 +44,11 @@ public class Symbol : MonoBehaviour
                     symbolValue = "Space";
                     break;
                 default:
-                    print("Could not find symbol value.");
+                    print("Could not find symbol value: " + symbolValue);
                     break;
             }
+
+            print("Trying to instantiate Game/SymbolModels/" + symbolValue);
 
             GameObject symbol = Resources.Load("Game/SymbolModels/" + symbolValue) as GameObject;
             Vector3 position = new Vector3(transform.position.x + (indexSpacer * spacing),
