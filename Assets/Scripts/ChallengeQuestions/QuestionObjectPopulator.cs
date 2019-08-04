@@ -27,7 +27,8 @@ public class QuestionObjectPopulator : MonoBehaviour
     }
 
     private void OnNewQuestion(string question, string[] answers)
-    {
+    { 
+        
         StartCoroutine(QuestionRoutine(question, answers));
         //throw new NotImplementedException();
     }
@@ -45,13 +46,11 @@ public class QuestionObjectPopulator : MonoBehaviour
         int indexSpacer = 0;
 
         foreach(string s in processedSymbols)
-        {
-            //Create offset for symbol container
+        { 
             Vector3 position = new Vector3(transform.position.x + (indexSpacer * symbolSpacing),
                 transform.position.y, transform.position.z);
 
             GameObject symbolClone = Instantiate(symbolPrefab, position, Quaternion.identity, this.transform) as GameObject;
-            
             //Set the symbol value (the value is the meshes that will be spawned).
             symbolClone.GetComponent<Symbol>().value = s;
 
