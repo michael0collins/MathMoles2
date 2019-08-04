@@ -93,7 +93,7 @@ public class QuestionObjectPopulator : MonoBehaviour
             if(symbol.myGoalObject != null)
                 symbol.TriggerMoveTogoalObject();
         }
-        yield return new WaitForSeconds(5.0f);
+        yield return new WaitForSeconds(2.5f);
         //cover letters
         ClearObjects();
         //report to server that game can start.

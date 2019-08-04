@@ -18,7 +18,9 @@ public class Symbol : MonoBehaviour
     {
         int indexSpacer = 0;
 
-        foreach(char c in symbols)
+        GameObject symbol = null;
+
+        foreach (char c in symbols)
         {
             //convert string into readable value by unity.
             string symbolValue = c.ToString();
@@ -51,10 +53,10 @@ public class Symbol : MonoBehaviour
 
             print("Trying to instantiate Game/SymbolModels/" + symbolValue);
 
-            GameObject symbol = Resources.Load("Game/SymbolModels/" + symbolValue) as GameObject;
+            symbol = Resources.Load("Game/SymbolModels/" + symbolValue) as GameObject;
             Vector3 position = new Vector3(transform.position.x + (indexSpacer * spacing),
                 transform.position.y, transform.position.z);
-            GameObject symbolClone = Instantiate(symbol, position, new Quaternion(0, 180, 0, 0), this.transform) as GameObject;
+            /* FIX MODELS */ GameObject symbolClone = Instantiate(symbol, position, new Quaternion(0, 180, 0, 0), this.transform) as GameObject;
 
             indexSpacer++;
         }
@@ -62,7 +64,7 @@ public class Symbol : MonoBehaviour
 
     private IEnumerator OnClear()
     {
-        //put clearing effects here.
+        //put clearing effects here.    
         yield return null;
         Destroy(this);
     }
