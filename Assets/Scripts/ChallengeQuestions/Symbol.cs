@@ -6,6 +6,8 @@ public class Symbol : MonoBehaviour
 {
     public string value;
     private float spacing = 1.0f;
+    public float moveSpeed = 1.0f;
+    public GoalObject myGoalObject = null;
 
     private void Start()
     {
@@ -44,7 +46,6 @@ public class Symbol : MonoBehaviour
                     symbolValue = "Space";
                     break;
                 default:
-                    print("Could not find symbol value: " + symbolValue);
                     break;
             }
 
@@ -64,5 +65,43 @@ public class Symbol : MonoBehaviour
         //put clearing effects here.
         yield return null;
         Destroy(this);
+    }
+    
+    public void FindMyGoalObject()
+    {
+        //find my goal object
+        foreach (GoalObject go in FindObjectsOfType<GoalObject>())
+        {
+            if (go.answer == value)
+                myGoalObject = go;
+        }
+
+        if (myGoalObject != null) { print("found goal object"); }
+    }
+
+    public void SetPositionToGoalObject(float offsetX, float offsetY, float offsetZ)
+    {
+        if(myGoalObject != null)
+            transform.position = new Vector3(myGoalObject.transform.position.x + offsetX,
+                myGoalObject.transform.position.y + offsetY,
+                    myGoalObject.transform.position.z + offsetZ);
+    }
+
+    public void TriggerMoveTogoalObject()
+    {
+        StartCoroutine(MoveToGoalObject(myGoalObject.transform));
+    }
+
+    private IEnumerator MoveToGoalObject(Transform position)
+    {      
+        //replace with spline
+        while (Vector3.Distance(transform.position, position.position) > .1f)
+        {
+            transform.position = new Vector3(Mathf.Lerp(transform.position.x, position.transform.position.x, moveSpeed * Time.deltaTime),
+                Mathf.Lerp(transform.position.y, position.transform.position.y, moveSpeed * Time.deltaTime),
+                    Mathf.Lerp(transform.position.z, position.transform.position.z, moveSpeed * Time.deltaTime));
+
+            yield return null;
+        }
     }
 }

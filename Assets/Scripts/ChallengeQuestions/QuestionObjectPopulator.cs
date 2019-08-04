@@ -9,8 +9,7 @@ public class QuestionObjectPopulator : MonoBehaviour
     [Header("Visuals")]
     public GameObject symbolPrefab;
 
-    [Header("Variables")]
-    public float symbolSpacing = 1.25f;
+    private float symbolSpacing = 1.5f;
 
     private void Start()
     {
@@ -63,7 +62,7 @@ public class QuestionObjectPopulator : MonoBehaviour
     }
 
     public void ClearObjects()
-    {
+    {  
         foreach (Symbol s in GetComponentsInChildren<Symbol>())
             //s.TriggerOnClear();
             Destroy(s.gameObject);
@@ -74,16 +73,30 @@ public class QuestionObjectPopulator : MonoBehaviour
         PopulateContainerWithSymbols(question);
         yield return new WaitForSeconds(5.0f);
         ClearObjects();
+        string allAnswers = "";
         foreach(string s in answers)
         {
-            PopulateContainerWithSymbols(s);
-            yield return new WaitForSeconds(2.5f);
-            foreach (Symbol symbol in GetComponentsInChildren<Symbol>())
-            {
-                //symbol.TriggerTravelToObjectLocation();
-            }
-            ClearObjects(); //Remove once the objects can travel to their goal locations.
+            allAnswers = allAnswers + "@" + s;
         }
+        PopulateContainerWithSymbols(allAnswers);
+        foreach(Symbol symbol in FindObjectsOfType<Symbol>())
+        {
+            symbol.FindMyGoalObject();
+            if (symbol.myGoalObject != null)
+                symbol.SetPositionToGoalObject(0, 1.5f, 0);
+        }
+
+        yield return new WaitForSeconds(5.0f);
+
+        foreach(Symbol symbol in FindObjectsOfType<Symbol>())
+        {
+            if(symbol.myGoalObject != null)
+                symbol.TriggerMoveTogoalObject();
+        }
+        yield return new WaitForSeconds(5.0f);
+        //cover letters
+        ClearObjects();
+        //report to server that game can start.
     }
 }
     
