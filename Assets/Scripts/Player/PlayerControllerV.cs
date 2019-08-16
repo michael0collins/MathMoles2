@@ -68,7 +68,7 @@ public class PlayerControllerV : MonoBehaviour
 
         Grounded = _characterController.isGrounded;
 
-        if (NetworkPlayer.isLocal)
+        if (NetworkPlayer.isLocal && _characterController.enabled)
         {
             CanSwing = Time.time - loggedSwingTime > attackCooldown ? true : false;
         #if UNITY_IPHONE || UNITY_ANDROID
