@@ -2172,7 +2172,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49dceaf92355dcb4b9c42dbc01da75cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  color: {r: 0, g: 1, b: 0, a: 1}
+  color: {r: 0, g: 1, b: 0, a: 0.09803922}
 --- !u!4 &86062138 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 4f2efb2d61eac7642be2fb185b269ac0,
@@ -3035,7 +3035,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49dceaf92355dcb4b9c42dbc01da75cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  color: {r: 0, g: 1, b: 0, a: 1}
+  color: {r: 0, g: 1, b: 0, a: 0.09803922}
 --- !u!1001 &132125398
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3868,7 +3868,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49dceaf92355dcb4b9c42dbc01da75cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  color: {r: 0, g: 1, b: 0, a: 1}
+  color: {r: 0, g: 1, b: 0, a: 0.09803922}
 --- !u!4 &176457186 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: b67ef80a8e4ffb648b3fc031b371cc19,
@@ -30299,7 +30299,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49dceaf92355dcb4b9c42dbc01da75cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  color: {r: 0, g: 1, b: 0, a: 1}
+  color: {r: 0, g: 1, b: 0, a: 0.09803922}
 --- !u!4 &1548805135 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 4f2efb2d61eac7642be2fb185b269ac0,
