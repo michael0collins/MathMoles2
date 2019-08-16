@@ -1,38 +1,40 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GoalObject : MonoBehaviour
 {
     public int goalIndex;
-    public int hitsToCollect = 5;
+    public int hitsToCollect = 10;
     public string answer = "";
 
-    public void RecieveHit()
+    [SerializeField]
+    private GameObject dirtMound;
+    private float _scale = 1f;
+
+    private void Awake() {
+        NetworkManager.PlayerHitAnswerObject += OnPlayerHitAnswerObject;
+    }
+
+    private void OnPlayerHitAnswerObject(NetworkPlayer source, int answerIndex, int answerHealth)
     {
-        hitsToCollect--;
-        if(hitsToCollect == 0)
-        {
-            ReportObjectCollectionToServer();
-            
-            //Display the answer that was in this goal object.
-            //Give feedback as win
-            //Give feedback as loss
-        }
-        else
-        {
-            ReportObjectHitToServer();
-            //Reduce size / show effect shrinking effect.
+        if (answerIndex == goalIndex) {
+            hitsToCollect = answerHealth;
+
+            _scale = answerHealth / 10f;
         }
     }
 
-    private void ReportObjectCollectionToServer()
-    {
-        //Check with the server to see if this is the correct object.
+    private void OnDestroy() {
+        NetworkManager.PlayerHitAnswerObject -= OnPlayerHitAnswerObject;
     }
 
-    private void ReportObjectHitToServer()
-    {
-        //Tell the server the new "hits to collect" for this goal object.
+    private void OnDisable() {
+        NetworkManager.PlayerHitAnswerObject -= OnPlayerHitAnswerObject;
+    }
+
+    private void Update() {
+        dirtMound.transform.localScale = Vector3.Lerp(dirtMound.transform.localScale, new Vector3(_scale, _scale, _scale), Time.deltaTime * 5f);
     }
 }

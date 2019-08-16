@@ -160,7 +160,6 @@ public class PlayerControllerV : MonoBehaviour
                     //play dig animation;
                     //Reduce the goal object hit threshhold.
                     playerAnimationController.SetTrigger("Attack");
-                    print("Hit goalobject");
                     NetworkPlayer.SendGoalHitData(hit.transform.gameObject.GetComponent<GoalObject>().goalIndex);
                 }
                 else

@@ -1419,8 +1419,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 0f2e3bc567b79a34289b6e21bf39cb8e, type: 3}
   - {fileID: 8300000, guid: b31a71805d97de7409ca312640720819, type: 3}
   - {fileID: 8300000, guid: c6e181be8d26f2948b78419b64a1f60c, type: 3}
-  _currentMusicIndex: -1
-  _currentlyPlaying: 0
 --- !u!1 &523049757
 GameObject:
   m_ObjectHideFlags: 0
@@ -2955,7 +2953,6 @@ GameObject:
   - component: {fileID: 1503185930}
   - component: {fileID: 1503185931}
   - component: {fileID: 1503185933}
-  - component: {fileID: 1503185932}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -3003,18 +3000,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: ad44269e2a22cd34697aa9e1ff9eb490, type: 2}
   - {fileID: 2100000, guid: b5b9ccc14f74e044b9bb579df192bb7c, type: 2}
   - {fileID: 2100000, guid: a02b9c73280d5274faca41505cb0f67f, type: 2}
---- !u!114 &1503185932
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1503185929}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c653965cd20e5e845a2604ba8d92b0dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1503185933
 MonoBehaviour:
   m_ObjectHideFlags: 0
