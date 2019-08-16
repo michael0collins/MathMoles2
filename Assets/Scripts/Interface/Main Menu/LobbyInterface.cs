@@ -64,7 +64,7 @@ public class LobbyInterface : MonoBehaviour
     private IEnumerator LobbyCountdown(int timems)
     {
         int seconds = timems / 1000;
-        for (int i = 0; i < timems; i++)
+        for (int i = 0; i < seconds; i++)
         {
             lobbyStatusText.text = $"Game starts in {seconds - i}...";
             yield return new WaitForSeconds(1);
