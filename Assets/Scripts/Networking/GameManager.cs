@@ -76,8 +76,10 @@ public class GameManager : MonoBehaviour
         if (source.uid != NetworkManager.UID)
             source.pc.Attack();
 
-        if (target.uid == NetworkManager.UID)
+        if (target.uid == NetworkManager.UID) {
             target.pc.GetKnockedBack(position);
+            CameraShake.ShakeCamera(0.1f, 0.1f, 1.0f);
+        }
     }
 
     private void OnCreatePlayer(uint uid, string username, int spawnPoint)
