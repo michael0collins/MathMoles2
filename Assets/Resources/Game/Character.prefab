@@ -112,7 +112,7 @@ GameObject:
   - component: {fileID: 2690206249818127778}
   - component: {fileID: 6823125485252013277}
   m_Layer: 10
-  m_Name: CharacterV
+  m_Name: Character
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -152,6 +152,11 @@ MonoBehaviour:
   attackForce: 10
   attackDistance: 0.75
   attackFieldSize: 0.2
+  jumpedOnCheckDistance: 1
+  jumpedOnCheckRadius: 0.25
+  playersMask:
+    serializedVersion: 2
+    m_Bits: 1024
   speed: 4
   airSpeed: 3
   jumpSpeed: 8
@@ -6571,7 +6576,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerVelocity: 0
-  particleSystem: {fileID: 4437623831850899133}
+  pSystem: {fileID: 0}
 --- !u!1 &4437812753629711609
 GameObject:
   m_ObjectHideFlags: 0

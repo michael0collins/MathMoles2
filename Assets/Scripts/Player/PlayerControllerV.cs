@@ -6,11 +6,16 @@ public class PlayerControllerV : MonoBehaviour
     [Header("Visuals")]
     public GameObject helmetObject;
 
-    [Header("Player Interaction")]
+    [Header("Player Attack")]
     public float attackCooldown = 1.0f;
     public float attackForce = 100f;
     public float attackDistance = 2f;
     public float attackFieldSize = 1f;
+
+    [Header("Player Jumping on Heads")]
+    public float jumpedOnCheckDistance = 1f;
+    public float jumpedOnCheckRadius = 0.5f;
+    public LayerMask playersMask;
 
     [Header("Player Movement")]
     public float speed = 6.0f;
@@ -66,7 +71,7 @@ public class PlayerControllerV : MonoBehaviour
         if (Time.time - _freezeTime > 1f)
             _characterController.enabled = true;
 
-        Grounded = _characterController.isGrounded;
+        Grounded = Physics.Raycast(transform.position, -transform.up, _characterController.height / 2f);
 
         if (NetworkPlayer.isLocal && _characterController.enabled)
         {
@@ -128,8 +133,14 @@ public class PlayerControllerV : MonoBehaviour
             _characterController.Move(moveDirection * Time.deltaTime);
 
             PlayerVelocity = _characterController.velocity.magnitude;
+
+            RaycastHit hit;
+            if (Physics.SphereCast(transform.position, jumpedOnCheckRadius,-transform.up, out hit, jumpedOnCheckDistance, playersMask)) {
+                moveDirection.y = 5f;
+            }
         }
 
+        footstepParticle.isGrounded = Grounded;
         footstepParticle.playerVelocity = PlayerVelocity;
         playerAnimationController.SetFloat("MovementSpeed", PlayerVelocity);
         playerAnimationController.SetBool("Grounded", Grounded);

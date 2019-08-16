@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class FootstepParticle : MonoBehaviour
 {
+    public bool isGrounded = true;
     public float playerVelocity = 0f;
     public ParticleSystem pSystem = null;
 
@@ -14,7 +15,7 @@ public class FootstepParticle : MonoBehaviour
 
     private void Update()
     {
-        if(playerVelocity >= .1f) 
+        if(playerVelocity >= .1f && isGrounded) 
         {
             if (!pSystem.isPlaying)
                 pSystem.Play();
