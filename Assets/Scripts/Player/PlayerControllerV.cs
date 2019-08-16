@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerControllerV : MonoBehaviour
@@ -45,6 +43,12 @@ public class PlayerControllerV : MonoBehaviour
     private bool Grounded = false;
     public float PlayerVelocity = 0f;
 
+    public bool Knocked { get; private set; } = false;
+    public float KnockDecreaseRate = 0.1f;
+    
+    private float _freezeTime;
+    private Vector3 _knockDirection = Vector3.zero;
+
     private void Awake()
     {
         _characterController = GetComponent<CharacterController>();
@@ -52,15 +56,20 @@ public class PlayerControllerV : MonoBehaviour
         joyStick = FindObjectOfType<Joystick>();
 
         loggedSwingTime = Time.time;
+
+        _characterController.enabled = false;
+        _freezeTime = Time.time;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
+        if (Time.time - _freezeTime > 1f)
+            _characterController.enabled = true;
+
         Grounded = _characterController.isGrounded;
 
         if (NetworkPlayer.isLocal)
         {
-            PlayerVelocity = _characterController.velocity.magnitude;
             CanSwing = Time.time - loggedSwingTime > attackCooldown ? true : false;
         #if UNITY_IPHONE || UNITY_ANDROID
             Vector2 input = new Vector2(joyStick.Horizontal, joyStick.Vertical);
@@ -70,7 +79,27 @@ public class PlayerControllerV : MonoBehaviour
             input.Normalize();
 
             float oldYVelocity = Grounded ? 0f : moveDirection.y;
-            moveDirection = new Vector3(input.x, 0f, input.y);
+
+            if (input != Vector2.zero && !Knocked)
+                moveDirection = new Vector3(input.x, 0f, input.y);
+            else if (Knocked) {
+                moveDirection = new Vector3(_knockDirection.x, 0f, _knockDirection.z);
+                if (_knockDirection.x > 0)
+                    _knockDirection.x -= KnockDecreaseRate;
+                else
+                    _knockDirection.x += KnockDecreaseRate;
+
+                if (_knockDirection.z > 0)
+                    _knockDirection.z -= KnockDecreaseRate;
+                else
+                    _knockDirection.z += KnockDecreaseRate;
+
+                if (Mathf.Abs(_knockDirection.x) <= 0.25f && Mathf.Abs(_knockDirection.z) <= 0.25f)
+                    Knocked = false;
+            }
+            else
+                moveDirection = Vector3.zero;
+
             moveDirection *= Grounded ? speed : airSpeed;
             moveDirection.y = oldYVelocity;
 
@@ -97,6 +126,8 @@ public class PlayerControllerV : MonoBehaviour
             }
 
             _characterController.Move(moveDirection * Time.deltaTime);
+
+            PlayerVelocity = _characterController.velocity.magnitude;
         }
 
         footstepParticle.playerVelocity = PlayerVelocity;
@@ -143,7 +174,9 @@ public class PlayerControllerV : MonoBehaviour
     public void GetKnockedBack(Vector3 position)
     {
         Vector3 direction = transform.position - position;
-        moveDirection.x = direction.x;
-        moveDirection.z = direction.z;
+        direction *= attackForce;
+        _knockDirection.x = direction.x;
+        _knockDirection.z = direction.z;
+        Knocked = true;
     }
 }

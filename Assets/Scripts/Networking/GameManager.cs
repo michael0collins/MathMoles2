@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
@@ -74,7 +72,7 @@ public class GameManager : MonoBehaviour
     private void OnPlayerHit(NetworkPlayer source, NetworkPlayer target, Vector3 position)
     {
         GameObject particle = Instantiate(hitParticle);
-        particle.transform.position = position;
+        particle.transform.position = target.transform.position;
         if (source.uid != NetworkManager.UID)
             source.pc.Attack();
 
@@ -124,7 +122,6 @@ public class GameManager : MonoBehaviour
             devPlayer.GetComponent<NetworkPlayer>().nametag.text = "";
             devPlayer.GetComponent<NetworkPlayer>().isLocal = true;
             devPlayer.transform.position = spawnPoints[0].transform.position;
-
         }
     }
 }

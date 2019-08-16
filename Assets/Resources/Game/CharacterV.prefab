@@ -149,7 +149,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   helmetObject: {fileID: 4436334116344457155}
   attackCooldown: 1
-  attackForce: 700
+  attackForce: 10
   attackDistance: 0.75
   attackFieldSize: 0.2
   speed: 4
@@ -159,6 +159,7 @@ MonoBehaviour:
   playerAnimationController: {fileID: 4379558831737166889}
   footstepParticle: {fileID: 4437623832600584675}
   PlayerVelocity: 0
+  KnockDecreaseRate: 0.1
 --- !u!114 &2690206249818127778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6792,7 +6793,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 912561da08132dd449337ced43c49b76, type: 3}
+    m_Font: {fileID: 12800000, guid: bb7a339f3e70500468c5d7a9b2929147, type: 3}
     m_FontSize: 100
     m_FontStyle: 0
     m_BestFit: 0
