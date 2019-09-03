@@ -9,12 +9,7 @@ public class QuestionObjectPopulator : MonoBehaviour
     [Header("Visuals")]
     public GameObject symbolPrefab;
 
-    private float symbolSpacing = 1.5f;
-
-    private void Start()
-    {
-       
-    }
+    public float symbolSpacing = 1f;
 
     private void OnEnable()
     {

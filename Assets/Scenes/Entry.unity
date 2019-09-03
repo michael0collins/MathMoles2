@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
+  m_IndirectSpecularColor: {r: 0.1273174, g: 0.13414761, b: 0.12107885, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2990,7 +2990,7 @@ MonoBehaviour:
   jumpBtn: {fileID: 5579314350742346200}
   cameraPrefab: {fileID: 6404222297877099260, guid: f767f0e11c82a0041bfe92717931aab2,
     type: 3}
-  playerPrefab: {fileID: 4016409218363207238, guid: 411c69ca2afa110419f1b42959d7e280,
+  playerPrefab: {fileID: 4016409218363207238, guid: 6d981e8aaa7cd254cad3eb14bac9a1d8,
     type: 3}
   spawnObjectPrefab: {fileID: 7512563068502199855, guid: 1d82ccad2c31a7c4986be70e456c09f9,
     type: 3}
