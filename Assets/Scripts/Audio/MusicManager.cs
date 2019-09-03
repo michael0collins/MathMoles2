@@ -6,6 +6,7 @@ public class MusicManager : MonoBehaviour
 {
     private MusicManager Instance;
 
+    public float maxMusicVolume = 1.0f;
     public AudioClip[] menuMusic;
     public AudioClip[] inGameMusic;
 
@@ -45,7 +46,7 @@ public class MusicManager : MonoBehaviour
     private IEnumerator StartMusic(AudioClip newClip) {
         _musicSource.clip = newClip;
         _musicSource.Play();
-        while (_musicSource.volume < 1) {
+        while (_musicSource.volume < maxMusicVolume) {
             _musicSource.volume += 0.1f;
             yield return new WaitForSeconds(0.1f);
         }
@@ -58,7 +59,7 @@ public class MusicManager : MonoBehaviour
         }
         _musicSource.clip = newClip;
         _musicSource.Play();
-        while (_musicSource.volume < 1) {
+        while (_musicSource.volume < maxMusicVolume) {
             _musicSource.volume += 0.1f;
             yield return new WaitForSeconds(0.1f);
         }

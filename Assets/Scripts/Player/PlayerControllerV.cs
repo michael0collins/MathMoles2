@@ -54,8 +54,12 @@ public class PlayerControllerV : MonoBehaviour
     private float _freezeTime;
     private Vector3 _knockDirection = Vector3.zero;
 
+    //Audio
+    private PlayerAudioController playerAudio;
+
     private void Awake()
     {
+        playerAudio = GetComponent<PlayerAudioController>();
         _characterController = GetComponent<CharacterController>();
         NetworkPlayer = GetComponent<NetworkPlayer>();
         joyStick = FindObjectOfType<Joystick>();
@@ -149,7 +153,10 @@ public class PlayerControllerV : MonoBehaviour
     public void Jump()
     {
         if (Grounded)
+        {
+            playerAudio.PlaySound(playerAudio.body, playerAudio.jump);
             moveDirection.y = jumpSpeed;
+        }
     }
 
     public void Attack()
@@ -164,17 +171,19 @@ public class PlayerControllerV : MonoBehaviour
                 if (hit.transform.gameObject.tag == "Player")
                 {
                     playerAnimationController.SetTrigger("Attack");
+                    playerAudio.PlaySound(playerAudio.item, playerAudio.swingHitPlayer);
                     NetworkPlayer.SendHitData(hit.transform.GetComponent<NetworkPlayer>(), hit.point);
                 }
                 else if (hit.transform.gameObject.tag == "GoalObject")
                 {
                     //play dig animation;
-                    //Reduce the goal object hit threshhold.
+                    playerAudio.PlaySound(playerAudio.item, playerAudio.swingHitObjective);
                     playerAnimationController.SetTrigger("Attack");
                     NetworkPlayer.SendGoalHitData(hit.transform.gameObject.GetComponent<GoalObject>().goalIndex);
                 }
                 else
                 {
+                    playerAudio.PlaySound(playerAudio.item, playerAudio.swing);
                     NetworkPlayer.SendFailedHitData();
                     //Missed axe attack animation.
                 }

@@ -51,7 +51,7 @@ public class Symbol : MonoBehaviour
                     break;
             }
 
-            print("Trying to instantiate Game/SymbolModels/" + symbolValue);
+            //print("Trying to instantiate Game/SymbolModels/" + symbolValue);
 
             symbol = Resources.Load("Game/SymbolModels/" + symbolValue) as GameObject;
             Vector3 position = new Vector3(transform.position.x + (indexSpacer * spacing),
